@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const hbs = require("hbs");
 const path = require("path");
+const mysql = require("mysql");
 
 const app = express();
 dotenv.config();
