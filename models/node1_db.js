@@ -1,10 +1,5 @@
 const mysql = require("mysql");
 
-const options = {
-	useUnifiedTopology: true,
-	useNewUrlParser: true,
-};
-
 var con1 = mysql.createConnection({
 	host: "stadvdb-mco2-central-node.c8pv2rlf7hct.us-east-1.rds.amazonaws.com",
 	user: "admin",

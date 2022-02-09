@@ -21,19 +21,37 @@ app.get(`/`, (req, res) => {
 	res.render("index");
 });
 
+// node 1 routes
 app.get(`/node1`, (req, res) => {
 	res.render("node1");
 });
-
 app.get("/node1-connect", (req, res) => {
 	controller.connectToNode1();
 });
+app.get("/node1-disconnect", (req, res) => {
+	controller.disconnectFromNode1();
+});
 
+// node 2 routes
 app.get(`/node2`, (req, res) => {
 	res.render("node2");
 });
+app.get("/node2-connect", (req, res) => {
+	controller.connectToNode2();
+});
+app.get("/node2-disconnect", (req, res) => {
+	controller.disconnectFromNode2();
+});
+
+// node 3 routes
 app.get(`/node3`, (req, res) => {
 	res.render("node3");
+});
+app.get("/node3-connect", (req, res) => {
+	controller.connectToNode3();
+});
+app.get("/node3-disconnect", (req, res) => {
+	controller.disconnectFromNode3();
 });
 
 app.listen(port, hostname, () => {
