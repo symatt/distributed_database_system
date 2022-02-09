@@ -8,4 +8,9 @@ $(document).ready(function () {
 		console.log("disconnecting from node 1...");
 		$.get("/node1-disconnect", (result) => {});
 	});
+
+	$("#node1-qAll-btn").click(() => {
+		console.log("getting all data from node 1...");
+		$.get("/node1_getAll", (result) => {});
+	});
 });

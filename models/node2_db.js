@@ -1,15 +1,16 @@
 const mysql = require("mysql");
 
-var con1 = mysql.createConnection({
+var con2 = mysql.createConnection({
 	host: "stadvdb-mco2-node2.c8pv2rlf7hct.us-east-1.rds.amazonaws.com",
 	user: "admin",
 	password: "stadvdb12345",
 	port: "3303",
+	database: "imdb_small",
 });
 
 const node2_db = {
 	connectToDatabase: function () {
-		con1.connect(function (err) {
+		con2.connect(function (err) {
 			if (err) {
 				console.log("Error connecting to node 2 :" + err.stack);
 				return;
@@ -19,7 +20,7 @@ const node2_db = {
 	},
 
 	disconnectFromDatabase: function () {
-		con1.end(function (err) {
+		con2.end(function (err) {
 			if (err) {
 				console.log("Error disconnecting from node 2 :" + err.stack);
 				return;

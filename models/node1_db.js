@@ -5,6 +5,7 @@ var con1 = mysql.createConnection({
 	user: "admin",
 	password: "stadvdb12345",
 	port: "3306",
+	database: "imdb_small",
 });
 
 const node1_db = {
@@ -25,6 +26,23 @@ const node1_db = {
 				return;
 			}
 			console.log("Disconnected from Node 1.");
+		});
+	},
+
+	getAll: function () {
+		let q = "select * from movies;";
+		con1.query(q, function (err, results, fields) {
+			if (err) console.log(err.message);
+			console.log(results);
+			console.log(results.length);
+		});
+	},
+
+	query: function (q) {
+		con1.query(q, function (err, results, fields) {
+			if (err) console.log(err.message);
+			console.log(results);
+			console.log(results.length);
 		});
 	},
 };
