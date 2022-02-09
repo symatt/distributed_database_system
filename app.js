@@ -2,7 +2,9 @@ const express = require("express");
 const dotenv = require("dotenv");
 const hbs = require("hbs");
 const path = require("path");
-const mysql = require("mysql");
+const controller = require("../distributed_database_system/controllers/controller");
+const req = require("express/lib/request");
+const res = require("express/lib/response");
 
 const app = express();
 dotenv.config();
@@ -22,6 +24,11 @@ app.get(`/`, (req, res) => {
 app.get(`/node1`, (req, res) => {
 	res.render("node1");
 });
+
+app.get("/node1-connect", (req, res) => {
+	controller.connectToNode1();
+});
+
 app.get(`/node2`, (req, res) => {
 	res.render("node2");
 });
