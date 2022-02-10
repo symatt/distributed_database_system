@@ -29,23 +29,36 @@ $(document).ready(function () {
 	});
 
 	$("#node1-submit").click(() => {
-		console.log("INPUT querying transaction node 1...");
-		let q = $("#queryInput").val();
-		$.post("/node1-q", { queryInput: q }, (result) => {
-			console.log("JQUERY");
-			console.log(result.datalength);
-			$("#data-length").text(result.datalength);
-			result.data.forEach((data) => {
-				$("#movie-table")
-					.find("tbody")
-					.append(
-						$("<tr>")
-							.append($("<td>").append(data.id))
-							.append($("<td>").append(data.name))
-							.append($("<td>").append(data.year))
-							.append($("<td>").append(data.rank))
-					);
-			});
+		$.ajax({
+			type: "POST",
+			url: "/node1-q",
+			data: { queryInput: $("#queryInput").val() },
+			success: function (result) {
+				console.log("JQUERY");
+				console.log(result.datalength);
+
+				// $("#data-length").text(result.datalength);
+				// result.data.forEach((data) => {
+				// 	$("#movie-table")
+				// 		.find("tbody")
+				// 		.append(
+				// 			$("<tr>")
+				// 				.append($("<td>").append(data.id))
+				// 				.append($("<td>").append(data.name))
+				// 				.append($("<td>").append(data.year))
+				// 				.append($("<td>").append(data.rank))
+				// 		);
+				// });
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				alert(
+					"Error, status = " +
+						textStatus +
+						", " +
+						"error thrown: " +
+						errorThrown
+				);
+			},
 		});
 	});
 });
