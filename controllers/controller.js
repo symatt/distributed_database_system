@@ -33,7 +33,8 @@ const controller = {
 		console.log(q);
 		console.log("querying transactions in node 1");
 		node1_db.query(q, (results) => {
-			if (results != null) {
+			console.log(typeof results);
+			if (results.length != null) {
 				console.log("movies result from select");
 				let movies = {
 					datalength: results.length,
@@ -45,8 +46,10 @@ const controller = {
 				console.log(movies);
 				console.log("update node1 page with query");
 				res.send(movies);
+			} else if (results.length == null) {
+				console.log("insert/delete/update has been made");
 			} else {
-				console.log("insert/delete has been made");
+				console.log("ERROR QUERY");
 			}
 		});
 	},
