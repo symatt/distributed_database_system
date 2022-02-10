@@ -41,7 +41,7 @@ app.get("/node1-disconnect", (req, res) => {
 app.get("/node1_getAll", (req, res) => {
 	controller.getAllMoviesNode1(req, res);
 });
-app.post("/node1", (req, res) => {
+app.post("/node1-q", (req, res) => {
 	controller.queryNode1(req, res);
 });
 

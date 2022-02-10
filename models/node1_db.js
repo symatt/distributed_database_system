@@ -30,7 +30,7 @@ const node1_db = {
 	},
 
 	getAll: function (callback) {
-		let q = "select * from movies;";
+		let q = "SELECT * FROM movies;";
 		con1.query(q, function (err, results, fields) {
 			if (err) console.log(err.message);
 			console.log(results);
@@ -39,11 +39,12 @@ const node1_db = {
 		});
 	},
 
-	query: function (q) {
+	query: function (q, callback) {
 		con1.query(q, function (err, results, fields) {
 			if (err) console.log(err.message);
 			console.log(results);
 			console.log(results.length);
+			return callback(results);
 		});
 	},
 };

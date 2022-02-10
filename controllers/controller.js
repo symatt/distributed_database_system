@@ -29,9 +29,26 @@ const controller = {
 	},
 
 	queryNode1: function (req, res) {
-		let q = req.body.query;
+		let q = req.body.queryInput;
+		console.log(q);
 		console.log("querying transactions in node 1");
-		node1_db.query(q);
+		node1_db.query(q, (results) => {
+			if (results != null) {
+				console.log("movies result from select");
+				let movies = {
+					datalength: results.length,
+					data: [],
+				};
+				results.forEach((RowDataPacket) => {
+					movies.data.push(RowDataPacket);
+				});
+				console.log(movies);
+				console.log("update node1 page with query");
+				res.send(movies);
+			} else {
+				console.log("insert/delete has been made");
+			}
+		});
 	},
 
 	connectToNode2: function (req, res) {

@@ -28,9 +28,11 @@ $(document).ready(function () {
 		});
 	});
 
-    $("#node1-submit").click(() => {
-		console.log("querying transaction node 1...");
-		$.post("/node1", (result) => {
+	$("#node1-submit").click(() => {
+		console.log("INPUT querying transaction node 1...");
+		let q = $("#queryInput").val();
+		$.post("/node1-q", { queryInput: q }, (result) => {
+			console.log("JQUERY");
 			console.log(result.datalength);
 			$("#data-length").text(result.datalength);
 			result.data.forEach((data) => {
