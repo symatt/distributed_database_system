@@ -14,9 +14,10 @@ const hostname = process.env.HOST_NAME;
 
 // render hbs files when res.render is called
 app.set("view engine", "hbs");
+app.set("views", path.join(__dirname, "views"));
+hbs.registerPartials(__dirname + "/views/partials");
 
 app.use(express.urlencoded({ extended: true }));
-
 app.use(express.static("public"));
 
 app.get(`/`, (req, res) => {
@@ -25,7 +26,11 @@ app.get(`/`, (req, res) => {
 
 // node 1 routes
 app.get(`/node1`, (req, res) => {
-	res.render("node1");
+	let movies = {
+		datalength: 0,
+		data: [],
+	};
+	res.render("node1", movies);
 });
 app.get("/node1-connect", (req, res) => {
 	controller.connectToNode1();
@@ -34,7 +39,7 @@ app.get("/node1-disconnect", (req, res) => {
 	controller.disconnectFromNode1();
 });
 app.get("/node1_getAll", (req, res) => {
-	controller.getAllMoviesNode1();
+	controller.getAllMoviesNode1(req, res);
 });
 app.post("/node1", (req, res) => {
 	controller.queryNode1(req, res);

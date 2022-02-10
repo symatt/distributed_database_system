@@ -28,6 +28,14 @@ const node2_db = {
 			console.log("Disconnected from Node 2.");
 		});
 	},
+
+    query: function (q) {
+		con1.query(q, function (err, results, fields) {
+			if (err) console.log(err.message);
+			console.log(results);
+			console.log(results.length);
+		});
+	},
 };
 
 module.exports = node2_db;

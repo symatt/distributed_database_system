@@ -12,7 +12,20 @@ const controller = {
 	},
 
 	getAllMoviesNode1: function (req, res) {
-		node1_db.getAll();
+		node1_db.getAll((results) => {
+			if (results != null) {
+				console.log("movies result from select all");
+				let movies = {
+					datalength: results.length,
+					data: [],
+				};
+				results.forEach((RowDataPacket) => {
+					movies.data.push(RowDataPacket);
+				});
+				console.log("update node1 page");
+				res.send(movies);
+			} else console.log("error with query all node 1");
+		});
 	},
 
 	queryNode1: function (req, res) {
@@ -29,12 +42,24 @@ const controller = {
 		node2_db.disconnectFromDatabase();
 	},
 
+	queryNode2: function (req, res) {
+		let q = req.body.query;
+		console.log("querying transactions in node 2");
+		node1_db.query(q);
+	},
+
 	connectToNode3: function (req, res) {
 		node3_db.connectToDatabase();
 	},
 
 	disconnectFromNode3: function (req, res) {
 		node3_db.disconnectFromDatabase();
+	},
+
+	queryNode3: function (req, res) {
+		let q = req.body.query;
+		console.log("querying transactions in node 3");
+		node1_db.query(q);
 	},
 };
 

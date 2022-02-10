@@ -14,16 +14,31 @@
     <body>
         <h1>this is node 1</h1>
         <h1>This is the central node with all the records of the movies.</h1>
+        <a href="/"><button>return to home</button></a>
+        <br>
         <button id="node1-connect-btn">Connect to Node 1</button>
         <button id="node1-disconnect-btn">Disconnect from Node 1</button>
         <button id="node1-qAll-btn">Get All Movies</button>
         <br>
         <br>
         <form id="node1-query" method="post">
-            <textarea name="query" id="query" placeholder="Query" required></textarea> <br>
+            <textarea rows=20 cols=100 name="query" id="query" placeholder="Query" required></textarea> <br>
             <input type="submit" id="node1-submit" value="QUERY">
         </form>
         <br>
-        <a href="/"><button>return to home</button></a>
+        <div>
+                <span><h3>Number of Rows: </h3><h3 id="data-length">0</h3></span>
+            <table id="movie-table">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Year</th>
+                    <th>Rank</th>
+                </tr>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
     </body>
 </html>

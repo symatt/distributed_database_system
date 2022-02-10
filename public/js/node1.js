@@ -11,6 +11,39 @@ $(document).ready(function () {
 
 	$("#node1-qAll-btn").click(() => {
 		console.log("getting all data from node 1...");
-		$.get("/node1_getAll", (result) => {});
+		$.get("/node1_getAll", (result) => {
+			console.log(result.datalength);
+			$("#data-length").text(result.datalength);
+			result.data.forEach((data) => {
+				$("#movie-table")
+					.find("tbody")
+					.append(
+						$("<tr>")
+							.append($("<td>").append(data.id))
+							.append($("<td>").append(data.name))
+							.append($("<td>").append(data.year))
+							.append($("<td>").append(data.rank))
+					);
+			});
+		});
+	});
+
+    $("#node1-submit").click(() => {
+		console.log("querying transaction node 1...");
+		$.post("/node1", (result) => {
+			console.log(result.datalength);
+			$("#data-length").text(result.datalength);
+			result.data.forEach((data) => {
+				$("#movie-table")
+					.find("tbody")
+					.append(
+						$("<tr>")
+							.append($("<td>").append(data.id))
+							.append($("<td>").append(data.name))
+							.append($("<td>").append(data.year))
+							.append($("<td>").append(data.rank))
+					);
+			});
+		});
 	});
 });

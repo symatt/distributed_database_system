@@ -29,12 +29,13 @@ const node1_db = {
 		});
 	},
 
-	getAll: function () {
+	getAll: function (callback) {
 		let q = "select * from movies;";
 		con1.query(q, function (err, results, fields) {
 			if (err) console.log(err.message);
 			console.log(results);
 			console.log(results.length);
+			return callback(results);
 		});
 	},
 

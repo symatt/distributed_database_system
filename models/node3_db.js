@@ -28,6 +28,14 @@ const node3_db = {
 			console.log("Disconnected from Node 3.");
 		});
 	},
+
+    query: function (q) {
+		con1.query(q, function (err, results, fields) {
+			if (err) console.log(err.message);
+			console.log(results);
+			console.log(results.length);
+		});
+	},
 };
 
 module.exports = node3_db;
