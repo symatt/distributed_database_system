@@ -29,11 +29,22 @@ const node3_db = {
 		});
 	},
 
-    query: function (q) {
-		con1.query(q, function (err, results, fields) {
+    getAll: function (callback) {
+		let q = "SELECT * FROM movies;";
+		con3.query(q, function (err, results, fields) {
 			if (err) console.log(err.message);
 			console.log(results);
 			console.log(results.length);
+			return callback(results);
+		});
+	},
+
+	query: function (q, callback) {
+		con3.query(q, function (err, results, fields) {
+			if (err) console.log(err.message);
+			console.log(results);
+			console.log(results.length);
+			return callback(results);
 		});
 	},
 };

@@ -26,11 +26,7 @@ app.get(`/`, (req, res) => {
 
 // node 1 routes
 app.get(`/node1`, (req, res) => {
-	let movies = {
-		datalength: 0,
-		data: [],
-	};
-	res.render("node1", movies);
+	res.render("node1");
 });
 app.get("/node1-connect", (req, res) => {
 	controller.connectToNode1();
@@ -56,15 +52,29 @@ app.get("/node2-disconnect", (req, res) => {
 	controller.disconnectFromNode2();
 });
 
+app.get("/node3_getAll", (req, res) => {
+	controller.getAllMoviesNode2(req, res);
+});
+app.post("/node2-q", (req, res) => {
+	controller.queryNode2(req, res);
+});
+
 // node 3 routes
 app.get(`/node3`, (req, res) => {
-	res.render("node3");
+	res.render("node3", movies);
 });
 app.get("/node3-connect", (req, res) => {
 	controller.connectToNode3();
 });
 app.get("/node3-disconnect", (req, res) => {
 	controller.disconnectFromNode3();
+});
+
+app.get("/node3_getAll", (req, res) => {
+	controller.getAllMoviesNode3(req, res);
+});
+app.post("/node3-q", (req, res) => {
+	controller.queryNode3(req, res);
 });
 
 app.listen(port, hostname, () => {

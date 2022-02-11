@@ -14,7 +14,7 @@ const controller = {
 	getAllMoviesNode1: function (req, res) {
 		node1_db.getAll((results) => {
 			if (results != null) {
-				console.log("movies result from select all");
+				console.log("[NODE 1] select all transaction");
 				let movies = {
 					datalength: results.length,
 					data: [],
@@ -22,20 +22,18 @@ const controller = {
 				results.forEach((RowDataPacket) => {
 					movies.data.push(RowDataPacket);
 				});
-				console.log("update node1 page");
+				console.log("[NODE 1] Reloading table");
 				res.send(movies);
-			} else console.log("error with query all node 1");
+			} else console.log("[NODE 1] error with select all");
 		});
 	},
 
 	queryNode1: function (req, res) {
 		let q = req.body.queryInput;
 		console.log(q);
-		console.log("querying transactions in node 1");
+		console.log("[NODE 1] querying transactions");
 		node1_db.query(q, (results) => {
-			console.log(typeof results);
 			if (results.length != null) {
-				console.log("movies result from select");
 				let movies = {
 					datalength: results.length,
 					data: [],
@@ -43,13 +41,12 @@ const controller = {
 				results.forEach((RowDataPacket) => {
 					movies.data.push(RowDataPacket);
 				});
-				console.log(movies);
-				console.log("update node1 page with query");
+				console.log("[NODE 1] Reloading table");
 				res.send(movies);
 			} else if (results.length == null) {
-				console.log("insert/delete/update has been made");
+				console.log("[NODE 1] insert/delete/update has been made");
 			} else {
-				console.log("ERROR QUERY");
+				console.log("[NODE 1] ERROR QUERY");
 			}
 		});
 	},
@@ -62,10 +59,44 @@ const controller = {
 		node2_db.disconnectFromDatabase();
 	},
 
+	getAllMoviesNode2: function (req, res) {
+		node2_db.getAll((results) => {
+			if (results != null) {
+				console.log("[NODE 2] select all transaction");
+				let movies = {
+					datalength: results.length,
+					data: [],
+				};
+				results.forEach((RowDataPacket) => {
+					movies.data.push(RowDataPacket);
+				});
+				console.log("[NODE 2] Reloading table");
+				res.send(movies);
+			} else console.log("[NODE 2] error with select all");
+		});
+	},
+
 	queryNode2: function (req, res) {
-		let q = req.body.query;
-		console.log("querying transactions in node 2");
-		node1_db.query(q);
+		let q = req.body.queryInput;
+		console.log(q);
+		console.log("[NODE 2] querying transactions");
+		node2_db.query(q, (results) => {
+			if (results.length != null) {
+				let movies = {
+					datalength: results.length,
+					data: [],
+				};
+				results.forEach((RowDataPacket) => {
+					movies.data.push(RowDataPacket);
+				});
+				console.log("[NODE 2] Reloading table");
+				res.send(movies);
+			} else if (results.length == null) {
+				console.log("[NODE 2] insert/delete/update has been made");
+			} else {
+				console.log("[NODE 2] ERROR QUERY");
+			}
+		});
 	},
 
 	connectToNode3: function (req, res) {
@@ -76,10 +107,44 @@ const controller = {
 		node3_db.disconnectFromDatabase();
 	},
 
-	queryNode3: function (req, res) {
-		let q = req.body.query;
-		console.log("querying transactions in node 3");
-		node1_db.query(q);
+	getAllMoviesNode3: function (req, res) {
+		node3_db.getAll((results) => {
+			if (results != null) {
+				console.log("[NODE 3] select all transaction");
+				let movies = {
+					datalength: results.length,
+					data: [],
+				};
+				results.forEach((RowDataPacket) => {
+					movies.data.push(RowDataPacket);
+				});
+				console.log("[NODE 3] Reloading table");
+				res.send(movies);
+			} else console.log("[NODE 3] error with select all");
+		});
+	},
+
+	queryNode1: function (req, res) {
+		let q = req.body.queryInput;
+		console.log(q);
+		console.log("[NODE 3] querying transactions");
+		node3_db.query(q, (results) => {
+			if (results.length != null) {
+				let movies = {
+					datalength: results.length,
+					data: [],
+				};
+				results.forEach((RowDataPacket) => {
+					movies.data.push(RowDataPacket);
+				});
+				console.log("[NODE 3] Reloading table");
+				res.send(movies);
+			} else if (results.length == null) {
+				console.log("[NODE 3] insert/delete/update has been made");
+			} else {
+				console.log("[NODE 3] ERROR QUERY");
+			}
+		});
 	},
 };
 

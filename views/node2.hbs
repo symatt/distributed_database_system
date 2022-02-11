@@ -14,15 +14,26 @@
     <body>
         <h1>this is node 2</h1>
         <h1>This is the node that contains movies from before 1980</h1>
+        <a href="/"><button>return to home</button></a>
+        <br>
         <button id="node2-connect-btn">Connect to Node 2</button>
         <button id="node2-disconnect-btn">Disconnect from Node 2</button>
+        <button id="node2-qAll-btn">Get All Movies</button>
         <br>
         <br>
-        <form id="node2-query">
-            <textarea rows=20 cols=100 name="query" id="query" placeholder="Query" required></textarea> <br>
-            <input type="submit" id="node2-submit" value="QUERY">
-        </form>
+        <textarea rows=20 cols=100 name="queryInput" id="queryInput" placeholder="Query" required></textarea> <br>
+        <input type="submit" id="node2-submit" value="QUERY">
         <br>
-        <a href="/"><button>return to home</button></a>
+        <div>
+            <span><h3>Number of Rows: </h3><h3 id="data-length">0</h3></span>
+            <table id="movie-table">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Year</th>
+                    <th>Rank</th>
+                </tr>
+            </table>
+        </div>
     </body>
 </html>
