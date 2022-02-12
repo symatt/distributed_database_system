@@ -1,3 +1,4 @@
+const logger = require("../helper/logger");
 const node1_db = require("../models/node1_db");
 const node2_db = require("../models/node2_db");
 const node3_db = require("../models/node3_db");
@@ -45,6 +46,10 @@ const controller = {
 				res.send(movies);
 			} else if (results.length == null) {
 				console.log("[NODE 1] insert/delete/update has been made");
+				console.log(
+					"[NODE 1] Logging insert/delete/update transaction"
+				);
+				logger.info(q);
 			} else {
 				console.log("[NODE 1] ERROR QUERY");
 			}
@@ -124,7 +129,7 @@ const controller = {
 		});
 	},
 
-	queryNode1: function (req, res) {
+	queryNode3: function (req, res) {
 		let q = req.body.queryInput;
 		console.log(q);
 		console.log("[NODE 3] querying transactions");
