@@ -3,6 +3,16 @@ const node1_db = require("../models/node1_db");
 const node2_db = require("../models/node2_db");
 const node3_db = require("../models/node3_db");
 
+/**
+ * mongoDB
+ * DB 1:
+ * each of the logs of insert/delete/udpate with query message and time
+ *
+ * DB2:
+ * each node with node number, last time updated
+ *
+ */
+
 const controller = {
 	connectToNode1: function (req, res) {
 		node1_db.connectToDatabase();

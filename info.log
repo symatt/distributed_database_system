@@ -1,3 +1,2 @@
-{"level":"info","message":"Server running at: http://localhost:3000","timestamp":"2022-02-12T06:36:25.540Z"}
 {"level":"info","message":"UPDATE movies \nSET NAME='changed', year=2000\nWHERE ID=2;","timestamp":"2022-02-12T07:02:53.694Z"}
 {"level":"info","message":"DELETE FROM movies WHERE id=2;","timestamp":"2022-02-12T07:07:39.340Z"}
