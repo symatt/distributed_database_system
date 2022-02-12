@@ -1,4 +1,5 @@
 const mysql = require("mysql");
+const logger = require("../helper/logger");
 
 var con1 = mysql.createConnection({
 	host: "stadvdb-mco2-central-node.c8pv2rlf7hct.us-east-1.rds.amazonaws.com",
@@ -40,6 +41,7 @@ const node1_db = {
 	},
 
 	query: function (q, callback) {
+		logger.error(q);
 		con1.query(q, function (err, results, fields) {
 			if (err) console.log(err.message);
 			console.log(results);

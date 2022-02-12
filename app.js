@@ -80,4 +80,5 @@ app.post("/node3-q", (req, res) => {
 
 app.listen(port, hostname, () => {
 	console.log(`Server running at: http://${hostname}:${port}`);
+	logger.error(`server up and running on PORT : ${port}`);
 });
