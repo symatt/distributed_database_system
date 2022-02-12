@@ -124,7 +124,7 @@ const controller = {
 		});
 	},
 
-	queryNode1: function (req, res) {
+	queryNode3: function (req, res) {
 		let q = req.body.queryInput;
 		console.log(q);
 		console.log("[NODE 3] querying transactions");

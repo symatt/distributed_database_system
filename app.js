@@ -52,7 +52,7 @@ app.get("/node2-disconnect", (req, res) => {
 	controller.disconnectFromNode2();
 });
 
-app.get("/node3_getAll", (req, res) => {
+app.get("/node2_getAll", (req, res) => {
 	controller.getAllMoviesNode2(req, res);
 });
 app.post("/node2-q", (req, res) => {
@@ -78,6 +78,5 @@ app.post("/node3-q", (req, res) => {
 });
 
 app.listen(port, hostname, () => {
-	console.log("Server running at: ");
-	console.log(`http://${hostname}:${port}`);
+	console.log(`Server running at: http://${hostname}:${port}`);
 });
