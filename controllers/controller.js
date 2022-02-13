@@ -24,15 +24,26 @@ const controller = {
 					movies.data.push(RowDataPacket);
 				});
 				// insert to central
+				var insertString = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank) 
+                        VALUES `;
 				movies.data.forEach((row) => {
 					console.log(row);
-					let q = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank) 
-                        VALUES (${row.id}, "${row.name}", ${row.year}, ${row.rank});`;
-					node1_db.query(q, (results) => {
-						console.log(
-							"[NODE 1] replication of 1 row from node 2 complete."
-						);
-					});
+					//let q = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank)
+					//VALUES (${row.id}, "${row.name}", ${row.year}, ${row.rank});`;
+
+					insertString = insertString.concat(
+						`(${row.id}, "${row.name}", ${row.year}, ${row.rank}), `
+					);
+					console.log("Added to string node 2");
+				});
+
+				insertString = insertString.slice(0, -2);
+				console.log(insertString);
+
+				node1_db.query(insertString, (results) => {
+					console.log(
+						"[NODE 1] replication of 1 row from node 2 complete."
+					);
 				});
 			} else console.log("[NODE 2] error with select all");
 		});
@@ -51,26 +62,27 @@ const controller = {
 					movies.data.push(RowDataPacket);
 				});
 				// insert to central
-                var insertString = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank) 
+				var insertString = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank) 
                         VALUES `;
 				movies.data.forEach((row) => {
 					console.log(row);
-					//let q = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank) 
-                        //VALUES (${row.id}, "${row.name}", ${row.year}, ${row.rank});`;
-                    
-                    insertString = insertString.concat(`(${row.id}, "${row.name}", ${row.year}, ${row.rank}), `);
-                    console.log("Added to string node 3");
-					
+					//let q = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank)
+					//VALUES (${row.id}, "${row.name}", ${row.year}, ${row.rank});`;
+
+					insertString = insertString.concat(
+						`(${row.id}, "${row.name}", ${row.year}, ${row.rank}), `
+					);
+					console.log("Added to string node 3");
 				});
-                
-                insertString = insertString.slice(0, -2);
-                console.log(insertString);
-                
-                node1_db.query(insertString, (results) => {
-						console.log(
-							"[NODE 1] replication of 1 row from node 3 complete."
-						);
-					});
+
+				insertString = insertString.slice(0, -2);
+				console.log(insertString);
+
+				node1_db.query(insertString, (results) => {
+					console.log(
+						"[NODE 1] replication of 1 row from node 3 complete."
+					);
+				});
 			} else console.log("[NODE 3] error with select all");
 		});
 
@@ -162,20 +174,30 @@ const controller = {
 						movies.data.push(RowDataPacket);
 					});
 					// insert to node 2
+					var insertString = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank) 
+                        VALUES `;
 					movies.data.forEach((row) => {
 						console.log(row);
-						let q = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank) 
-                        VALUES (${row.id}, "${row.name}", ${row.year}, ${row.rank});`;
-						node2_db.query(q, (results) => {
-							console.log(
-								"[NODE 2] replication of 1 row from node 1 complete."
-							);
-						});
+						//let q = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank)
+						//VALUES (${row.id}, "${row.name}", ${row.year}, ${row.rank});`;
+
+						insertString = insertString.concat(
+							`(${row.id}, "${row.name}", ${row.year}, ${row.rank}), `
+						);
+						console.log("Added to string node 1");
 					});
-					console.log("[NODE 2] finished replication from node 1.");
+
+					insertString = insertString.slice(0, -2);
+					console.log(insertString);
+
+					node2_db.query(insertString, (results) => {
+						console.log(
+							"[NODE 2] finished replication from node 1."
+						);
+					});
 				} else
 					console.log(
-						"[NODE 1] error with select movies where year < 1980"
+						"[NODE 1] error with select movies year < 1980"
 					);
 			}
 		);
@@ -269,19 +291,28 @@ const controller = {
 					results.forEach((RowDataPacket) => {
 						movies.data.push(RowDataPacket);
 					});
-					// insert to node 3
+					// insert to node 2
+					var insertString = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank) 
+                        VALUES `;
 					movies.data.forEach((row) => {
 						console.log(row);
-						let q = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank) 
-                        VALUES (${row.id}, "${row.name}", ${row.year}, ${row.rank});`;
-						node3_db.query(q, (results) => {
-							console.log(
-								"[NODE 3] replication of 1 row from node 1 complete."
-							);
-						});
+						//let q = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank)
+						//VALUES (${row.id}, "${row.name}", ${row.year}, ${row.rank});`;
+
+						insertString = insertString.concat(
+							`(${row.id}, "${row.name}", ${row.year}, ${row.rank}), `
+						);
+						console.log("Added to string node 1");
 					});
 
-					console.log("[NODE 3] finished replication from node 1.");
+					insertString = insertString.slice(0, -2);
+					console.log(insertString);
+
+					node2_db.query(insertString, (results) => {
+						console.log(
+							"[NODE 3] finished replication from node 1."
+						);
+					});
 				} else
 					console.log(
 						"[NODE 1] error with select movies where year >= 1980"
