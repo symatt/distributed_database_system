@@ -291,7 +291,7 @@ const controller = {
 					results.forEach((RowDataPacket) => {
 						movies.data.push(RowDataPacket);
 					});
-					// insert to node 2
+					// insert to node 3
 					var insertString = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank) 
                         VALUES `;
 					movies.data.forEach((row) => {
@@ -308,7 +308,7 @@ const controller = {
 					insertString = insertString.slice(0, -2);
 					console.log(insertString);
 
-					node2_db.query(insertString, (results) => {
+					node3_db.query(insertString, (results) => {
 						console.log(
 							"[NODE 3] finished replication from node 1."
 						);
