@@ -16,8 +16,19 @@
         <h1>This is the node that contains movies from 1980 onwards.</h1>
         <a href="/"><button>return to home</button></a>
         <br>
+        <br>
+        <label for="isolevel">Choose an isolation level:</label>
+        <select name="isolevel" id="isolevel" >
+            <option value="READ UNCOMMITTED">READ UNCOMMITTED</option>
+            <option value="READ COMMITTED">READ COMMITTED</option>
+            <option value="READ REPEATABLE" selected>READ REPEATABLE</option>
+            <option value="SERIALIZABLE">SERIALIZABLE</option>
+        </select>
+        <br>
+        <br>
         <button id="node3-connect-btn">Connect to Node 3</button>
         <button id="node3-disconnect-btn">Disconnect from Node 3</button>
+        <button id="node3-fail-btn">Fail</button>
         <button id="node3-qAll-btn">Get All Movies</button>
         <br>
         <br>
