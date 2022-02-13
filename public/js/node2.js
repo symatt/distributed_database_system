@@ -9,7 +9,7 @@ $(document).ready(function () {
 		$.get("/node2-disconnect", (result) => {});
 	});
 
-    $("#node2-qAll-btn").click(() => {
+	$("#node2-qAll-btn").click(() => {
 		console.log("getting all data from node 2...");
 		$.get("/node2_getAll", (result) => {
 			console.log(result.datalength);
@@ -86,7 +86,7 @@ $(document).ready(function () {
 		});
 	});
 
-    $("#isolevel").change(() => {
+	$("#isolevel").change(() => {
 		console.log("changed iso level");
 		$.ajax({
 			type: "POST",
@@ -105,5 +105,9 @@ $(document).ready(function () {
 				);
 			},
 		});
+	});
+
+	$("#node2-fail-btn").click(() => {
+		$.get("/node2-fail", (result) => {});
 	});
 });

@@ -2,7 +2,7 @@ const mysql = require("mysql");
 const db = require("./db");
 
 const node2_db = {
-	connectToDatabase: function () {
+	connectToDatabase1: function () {
 		db.con1.connect(function (err) {
 			if (err) {
 				console.log("Error connecting to node 1 :" + err.stack);
@@ -10,7 +10,9 @@ const node2_db = {
 			}
 			console.log("Connected to Node 1.");
 		});
+	},
 
+	connectToDatabase: function () {
 		db.con2.connect(function (err) {
 			if (err) {
 				console.log("Error connecting to node 2 :" + err.stack);
@@ -18,7 +20,9 @@ const node2_db = {
 			}
 			console.log("Connected to Node 2.");
 		});
+	},
 
+	connectToDatabase3: function () {
 		db.con3.connect(function (err) {
 			if (err) {
 				console.log("Error connecting to node 3 :" + err.stack);
@@ -28,7 +32,7 @@ const node2_db = {
 		});
 	},
 
-	disconnectFromDatabase: function () {
+	disconnectFromDatabase1: function () {
 		db.con1.end(function (err) {
 			if (err) {
 				console.log("Error disconnecting from node 1 :" + err.stack);
@@ -36,7 +40,9 @@ const node2_db = {
 			}
 			console.log("Disconnected from Node 1.");
 		});
+	},
 
+	disconnectFromDatabase: function () {
 		db.con2.end(function (err) {
 			if (err) {
 				console.log("Error disconnecting from node 2 :" + err.stack);
@@ -44,7 +50,9 @@ const node2_db = {
 			}
 			console.log("Disconnected from Node 2.");
 		});
+	},
 
+	disconnectFromDatabase3: function () {
 		db.con3.end(function (err) {
 			if (err) {
 				console.log("Error disconnecting from node 3 :" + err.stack);
@@ -73,7 +81,7 @@ const node2_db = {
 		});
 	},
 
-    queryToOthers: function (q) {
+	queryToOthers: function (q) {
 		db.con1.query(q, function (err, results, fields) {
 			if (err) console.log(err.message);
 		});
@@ -90,7 +98,7 @@ const node2_db = {
 		});
 	},
 
-    setIsoLevel: function (iso) {
+	setIsoLevel: function (iso) {
 		db.con2.query(
 			`SET SESSION TRANSACTION ISOLATION LEVEL ${iso};`,
 			function (err, result, fields) {

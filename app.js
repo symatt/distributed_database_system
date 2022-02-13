@@ -65,6 +65,10 @@ app.post("/node2-isolevel", (req, res) => {
 	controller.setIsoLevel2(req, res);
 });
 
+app.get("/node2-fail", (req, res) => {
+	controller.failNode2(req, res);
+});
+
 // node 3 routes
 app.get(`/node3`, (req, res) => {
 	res.render("node3");

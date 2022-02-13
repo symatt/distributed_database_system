@@ -5,6 +5,41 @@ const node3_db = require("../models/node3_db");
 const controller = {
 	connectToNode1: function (req, res) {
 		node1_db.connectToDatabase();
+		node1_db.connectToDatabase2();
+		node1_db.connectToDatabase3();
+		// delete all contents
+		node1_db.query(`DELETE FROM movies WHERE year < 1980;`, (result) => {});
+		console.log("[NODE 1] deleted movies");
+		// select all from node 2
+		node2_db.cleanDB();
+		console.log("[NODE 2] clean DB");
+		node2_db.getAll((results) => {
+			if (results != null) {
+				console.log("[NODE 2] select all transaction");
+				let movies = {
+					datalength: results.length,
+					data: [],
+				};
+				results.forEach((RowDataPacket) => {
+					movies.data.push(RowDataPacket);
+				});
+
+				movies.data.forEach((row) => {
+					console.log(row);
+					let q = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank) 
+                        VALUES (${row.id}, '${row.name}', ${row.year}, ${row.rank});`;
+					node1_db.query(q, (results) => {
+						console.log(
+							"[NODE 1] replication of 1 row from node 2 complete."
+						);
+					});
+				});
+			} else console.log("[NODE 2] error with select all");
+		});
+		// insert to central
+
+		// select all from node 3
+		// insert to central
 	},
 
 	disconnectFromNode1: function (req, res) {
@@ -60,8 +95,47 @@ const controller = {
 		node1_db.setIsoLevel(iso);
 	},
 
+	recoverNode1: function (req, res) {
+		// delete all contents
+		node1_db.query(
+			`DELETE FROM movies WHERE year < 1980;`,
+			(results) => {}
+		);
+
+		// select all from node 2
+		node2_db.connectToDatabase();
+		node2_db.cleanDB();
+
+		node2_db.getAll((results) => {
+			if (results != null) {
+				console.log("[NODE 2] select all transaction");
+				let movies = {
+					datalength: results.length,
+					data: [],
+				};
+				results.forEach((RowDataPacket) => {
+					movies.data.push(RowDataPacket);
+				});
+			} else console.log("[NODE 2] error with select all");
+		});
+		// insert to central
+		movies.data.forEach((row) => {
+			console.log(row);
+			let q = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank) 
+                VALUES (${row.id}, ${row.name}, ${row.year}, ${row.rank});`;
+			node1_db.query(q, (results) => {
+				console.log("[NODE 1] replication from node 2 complete.");
+			});
+		});
+
+		// select all from node 3
+		// insert to central
+	},
+
 	connectToNode2: function (req, res) {
 		node2_db.connectToDatabase();
+		node2_db.connectToDatabase1();
+		node2_db.connectToDatabase3();
 		console.log("[NODE 2] connecting to node 2...");
 		node2_db.cleanDB();
 		console.log("[NODE 2] cleaning up node 2...");
@@ -122,6 +196,11 @@ const controller = {
 		let iso = req.body.iso;
 		console.log(iso);
 		node1_db.setIsoLevel(iso);
+	},
+
+	failNode2: function (req, res) {
+		node2_db.disconnectFromDatabase1();
+		console.log("disconnected from node 1");
 	},
 
 	connectToNode3: function (req, res) {
