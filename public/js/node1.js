@@ -1,16 +1,16 @@
 $(document).ready(function () {
 	$("#node1-connect-btn").click(() => {
-		console.log("connecting to node 1...");
+		// console.log("connecting to node 1...");
 		$.get("/node1-connect", (result) => {});
 	});
 
 	$("#node1-disconnect-btn").click(() => {
-		console.log("disconnecting from node 1...");
+		// console.log("disconnecting from node 1...");
 		$.get("/node1-disconnect", (result) => {});
 	});
 
 	$("#node1-qAll-btn").click(() => {
-		console.log("getting all data from node 1...");
+		// console.log("getting all data from node 1...");
 		$.get("/node1_getAll", (result) => {
 			console.log(result.datalength);
 			$("#data-length").text(result.datalength);
@@ -45,9 +45,9 @@ $(document).ready(function () {
 			url: "/node1-q",
 			data: { queryInput: $("#queryInput").val() },
 			success: function (result) {
-				console.log("JQUERY");
-				console.log(result.datalength);
-				console.log(result.data);
+				// console.log("JQUERY");
+				// console.log(result.datalength);
+				// console.log(result.data);
 				$("#data-length").text(result.datalength);
 
 				$("#movie-table").find("tbody").empty();
@@ -87,13 +87,13 @@ $(document).ready(function () {
 	});
 
 	$("#isolevel").change(() => {
-		console.log("changed iso level");
+		// console.log("changed iso level");
 		$.ajax({
 			type: "POST",
 			url: "/node1-isolevel",
 			data: { iso: $("#isolevel").val() },
 			success: function (result) {
-				console.log("CHANGED ISO LEVEL");
+				// console.log("CHANGED ISO LEVEL");
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
 				alert(

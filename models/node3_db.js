@@ -1,4 +1,3 @@
-const mysql = require("mysql");
 const db = require("./db");
 
 const node3_db = {
@@ -64,7 +63,7 @@ const node3_db = {
 
 
 	getAll: function (callback) {
-		let q = "SELECT * FROM movies;";
+		let q = "SELECT * FROM movies WHERE movies.rank IS NOT NULL;";
 		db.con3.query(q, function (err, results, fields) {
 			if (err) console.log(err.message);
 			console.log(results);
@@ -76,8 +75,6 @@ const node3_db = {
 	query: function (q, callback) {
 		db.con3.query(q, function (err, results, fields) {
 			if (err) console.log(err.message);
-			console.log(results);
-			console.log(results.length);
 			return callback(results);
 		});
 	},
@@ -93,7 +90,7 @@ const node3_db = {
 	},
 
 	cleanDB: function () {
-		let q = "DELETE FROM movies WHERE movies.year<1980;";
+		let q = "DELETE FROM movies WHERE movies.year<1980 AND movies.rank IS NOT NULL;";
 		db.con3.query(q, function (err, results, fields) {
 			if (err) console.log(err.message);
 		});
