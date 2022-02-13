@@ -43,6 +43,9 @@ app.post("/node1-q", (req, res) => {
 app.post("/node1-isolevel", (req, res) => {
 	controller.setIsoLevel1(req, res);
 });
+app.get("/node1-fail", (req, res) => {
+	controller.failNode1(req, res);
+});
 
 // node 2 routes
 app.get(`/node2`, (req, res) => {
@@ -64,7 +67,6 @@ app.post("/node2-q", (req, res) => {
 app.post("/node2-isolevel", (req, res) => {
 	controller.setIsoLevel2(req, res);
 });
-
 app.get("/node2-fail", (req, res) => {
 	controller.failNode2(req, res);
 });
@@ -88,6 +90,9 @@ app.post("/node3-q", (req, res) => {
 });
 app.post("/node3-isolevel", (req, res) => {
 	controller.setIsoLevel3(req, res);
+});
+app.get("/node3-fail", (req, res) => {
+	controller.failNode3(req, res);
 });
 
 app.listen(port, hostname, () => {

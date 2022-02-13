@@ -106,4 +106,8 @@ $(document).ready(function () {
 			},
 		});
 	});
+
+    $("#node3-fail-btn").click(() => {
+		$.get("/node3-fail", (result) => {});
+	});
 });

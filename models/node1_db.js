@@ -12,25 +12,25 @@ const node1_db = {
 		});
 	},
 
-    connectToDatabase2: function () {
-        db.con2.connect(function (err) {
+	connectToDatabase2: function () {
+		db.con2.connect(function (err) {
 			if (err) {
 				console.log("Error connecting to node 2 :" + err.stack);
 				return;
 			}
 			console.log("Connected to Node 2.");
 		});
-    },
+	},
 
-    connectToDatabase3: function () {
-        db.con3.connect(function (err) {
+	connectToDatabase3: function () {
+		db.con3.connect(function (err) {
 			if (err) {
 				console.log("Error connecting to node 3 :" + err.stack);
 				return;
 			}
 			console.log("Connected to Node 3.");
 		});
-    },
+	},
 
 	disconnectFromDatabase: function () {
 		db.con1.end(function (err) {
@@ -42,25 +42,25 @@ const node1_db = {
 		});
 	},
 
-    disconnectFromDatabase2: function () {
-        db.con2.end(function (err) {
+	disconnectFromDatabase2: function () {
+		db.con2.end(function (err) {
 			if (err) {
 				console.log("Error disconnecting from node 2 :" + err.stack);
 				return;
 			}
 			console.log("Disconnected from Node 2.");
 		});
-    },
+	},
 
-    disconnectFromDatabase3: function () {
-        db.con3.end(function (err) {
+	disconnectFromDatabase3: function () {
+		db.con3.end(function (err) {
 			if (err) {
 				console.log("Error disconnecting from node 3 :" + err.stack);
 				return;
 			}
 			console.log("Disconnected from Node 3.");
 		});
-    },
+	},
 
 	getAll: function (callback) {
 		let q = "SELECT * FROM movies;";
@@ -99,8 +99,6 @@ const node1_db = {
 			}
 		);
 	},
-
-
 };
 
 module.exports = node1_db;
