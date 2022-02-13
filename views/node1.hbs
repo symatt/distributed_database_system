@@ -16,6 +16,16 @@
         <h1>This is the central node with all the records of the movies.</h1>
         <a href="/"><button>return to home</button></a>
         <br>
+        <br>
+        <label for="isolevel">Choose an isolation level:</label>
+        <select name="isolevel" id="isolevel" >
+            <option value="READ UNCOMMITTED">READ UNCOMMITTED</option>
+            <option value="READ COMMITTED">READ COMMITTED</option>
+            <option value="READ REPEATABLE" selected>READ REPEATABLE</option>
+            <option value="SERIALIZABLE">SERIALIZABLE</option>
+        </select>
+        <br>
+        <br>
         <button id="node1-connect-btn">Connect to Node 1</button>
         <button id="node1-disconnect-btn">Disconnect from Node 1</button>
         <button id="node1-qAll-btn">Get All Movies</button>
@@ -23,6 +33,7 @@
         <br>
         <textarea rows=20 cols=100 name="queryInput" id="queryInput" placeholder="Query" required></textarea> <br>
         <input type="submit" id="node1-submit" value="QUERY">
+        <br>
         <br>
         <div>
             <span><h3>Number of Rows: </h3><h3 id="data-length">0</h3></span>

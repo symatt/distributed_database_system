@@ -40,6 +40,9 @@ app.get("/node1_getAll", (req, res) => {
 app.post("/node1-q", (req, res) => {
 	controller.queryNode1(req, res);
 });
+app.post("/node1-isolevel", (req, res) => {
+	controller.setIsoLevel1(req, res);
+});
 
 // node 2 routes
 app.get(`/node2`, (req, res) => {
@@ -58,10 +61,13 @@ app.get("/node2_getAll", (req, res) => {
 app.post("/node2-q", (req, res) => {
 	controller.queryNode2(req, res);
 });
+app.post("/node2-isolevel", (req, res) => {
+	controller.setIsoLevel2(req, res);
+});
 
 // node 3 routes
 app.get(`/node3`, (req, res) => {
-	res.render("node3", movies);
+	res.render("node3");
 });
 app.get("/node3-connect", (req, res) => {
 	controller.connectToNode3();
@@ -75,6 +81,9 @@ app.get("/node3_getAll", (req, res) => {
 });
 app.post("/node3-q", (req, res) => {
 	controller.queryNode3(req, res);
+});
+app.post("/node3-isolevel", (req, res) => {
+	controller.setIsoLevel3(req, res);
 });
 
 app.listen(port, hostname, () => {

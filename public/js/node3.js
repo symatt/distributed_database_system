@@ -85,4 +85,25 @@ $(document).ready(function () {
 			},
 		});
 	});
+
+    $("#isolevel").change(() => {
+		console.log("changed iso level");
+		$.ajax({
+			type: "POST",
+			url: "/node3-isolevel",
+			data: { iso: $("#isolevel").val() },
+			success: function (result) {
+				console.log("CHANGED ISO LEVEL");
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				alert(
+					"Error, status = " +
+						textStatus +
+						", " +
+						"error thrown: " +
+						errorThrown
+				);
+			},
+		});
+	});
 });
