@@ -63,6 +63,8 @@ const controller = {
 				});
 			} else console.log("[NODE 3] error with select all");
 		});
+
+		console.log("[NODE 1] finished replication from node 2 and 3.");
 	},
 
 	disconnectFromNode1: function (req, res) {
@@ -158,6 +160,7 @@ const controller = {
 						);
 					});
 				});
+				console.log("[NODE 2] finished replication from node 1.");
 			} else
 				console.log(
 					"[NODE 1] error with select movies where year < 1980"
@@ -262,6 +265,8 @@ const controller = {
 						);
 					});
 				});
+
+				console.log("[NODE 3] finished replication from node 1.");
 			} else
 				console.log(
 					"[NODE 1] error with select movies where year >= 1980"
