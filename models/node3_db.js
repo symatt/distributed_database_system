@@ -61,9 +61,9 @@ const node3_db = {
 		});
 	},
 
-
 	getAll: function (callback) {
-		let q = "SELECT * FROM movies WHERE movies.rank IS NOT NULL;";
+		let q =
+			"SELECT * FROM movies WHERE movies.rank IS NOT NULL LIMIT 5000;";
 		db.con3.query(q, function (err, results, fields) {
 			if (err) console.log(err.message);
 			console.log(results);
@@ -90,7 +90,8 @@ const node3_db = {
 	},
 
 	cleanDB: function () {
-		let q = "DELETE FROM movies WHERE movies.year<1980 AND movies.rank IS NOT NULL;";
+		let q =
+			"DELETE FROM movies WHERE movies.year<1980 AND movies.rank IS NOT NULL;";
 		db.con3.query(q, function (err, results, fields) {
 			if (err) console.log(err.message);
 		});
