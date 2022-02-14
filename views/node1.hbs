@@ -23,16 +23,14 @@
             <option value="READ REPEATABLE" selected>READ REPEATABLE</option>
             <option value="SERIALIZABLE">SERIALIZABLE</option>
         </select> --}}
-        <br>
-        <br>
-        <button id="node1-fail-btn">Fail</button>
-        <button id="node1-qAll-btn">Get All Movies (5000 limit)</button>
+
+        <button id="node1-fail-btn" class="nodeBtns">Fail</button>
+        <button id="node1-qAll-btn" class="nodeBtns">Get All Movies (5000 limit)</button>
         <br>
         <br>
         <textarea rows=20 cols=100 name="queryInput" id="queryInput" placeholder="Query" required></textarea> <br>
-        <input type="submit" id="node1-submit" value="QUERY">
-        <br>
-        <br>
+        <input type="submit" id="node1-submit" value="QUERY" class="nodeBtns">
+
         <div>
             <span><h3>Number of Rows: </h3><h3 id="data-length">0</h3></span>
             <table id="movie-table">

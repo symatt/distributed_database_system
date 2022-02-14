@@ -16,8 +16,10 @@ body {
 table {
     margin: auto;
     background-color: white;
+    padding: 10px;
+    border: 1px solid gray;
     border-radius: 2px;
-    width: 700px;
+    width: 750px;
     margin-bottom: 100px;
     
 }
@@ -30,4 +32,35 @@ th, td {
 h3 {
     display: inline-block;
     margin-bottom: 20px;
+}
+
+.indexBtn 
+{
+    padding: 20px 100px;
+    font-size: 22px;
+    margin: 30px;
+}
+
+button {
+    cursor: pointer;
+}
+
+.nodeBtns 
+{
+    padding: 5px;
+    font-size: 15px;
+    margin: 30px;
+    width: 250px;
+    cursor: pointer;
+}
+
+#node1-submit, #node2-submit, #node3-submit
+{
+    padding: 20px;
+}
+
+
+
+#queryInput {
+    padding: 10px;
 }
