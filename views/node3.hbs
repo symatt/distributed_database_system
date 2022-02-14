@@ -15,15 +15,15 @@
         <h1>this is node 3</h1>
         <h1>This is the node that contains movies from 1980 onwards.</h1>
         <a href="/"><button>return to home</button></a>
-        {{!-- <br>
         <br>
-        <label for="isolevel">Choose an isolation level:</label>
-        <select name="isolevel" id="isolevel" >
-            <option value="READ UNCOMMITTED">READ UNCOMMITTED</option>
-            <option value="READ COMMITTED">READ COMMITTED</option>
-            <option value="READ REPEATABLE" selected>READ REPEATABLE</option>
-            <option value="SERIALIZABLE">SERIALIZABLE</option>
-        </select> --}}
+        <br>
+        <label for="select-fail">Choose nodes to fail:</label>
+        <select name="select-fail" id="select-fail" >
+            <option value="0" selected>NONE</option>
+            <option value="1">Node 1</option>
+            <option value="2">Node 2</option>
+            <option value="10">BOTH 1 & 2</option>
+        </select>
         <br>
         <br>
         <button id="node3-fail-btn">Fail</button>

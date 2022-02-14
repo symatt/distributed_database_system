@@ -132,6 +132,20 @@ const node2_db = {
 			);
 		});
 	},
+
+    getLastUpdateTime: function (callback) {
+		db.con2.getConnection(function (err, connection) {
+			if (err) throw err;
+			db.con2.query(
+				`SELECT UPDATE_TIME as utime FROM information_schema.tables WHERE TABLE_SCHEMA='imdb_small' AND TABLE_NAME='movies';`,
+				function (err, results, fields) {
+					connection.release();
+					if (err) console.log(err.message);
+					return callback(results);
+				}
+			);
+		});
+	},
 };
 
 module.exports = node2_db;

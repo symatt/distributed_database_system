@@ -45,7 +45,10 @@ $(document).ready(function () {
 		$.ajax({
 			type: "POST",
 			url: "/node1-q",
-			data: { queryInput: $("#queryInput").val() },
+			data: {
+				queryInput: $("#queryInput").val(),
+				fail: $("#select-fail").val(),
+			},
 			success: function (result) {
 				// console.log("JQUERY");
 				// console.log(result.datalength);

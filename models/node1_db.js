@@ -125,7 +125,7 @@ const node1_db = {
 		db.con1.getConnection(function (err, connection) {
 			if (err) throw err;
 			db.con1.query(
-				`SELECT UPDATE_TIME FROM information_schema.tables WHERE TABLE_SCHEMA='imdb_small' AND TABLE_NAME='movies';`,
+				`SELECT UPDATE_TIME as utime FROM information_schema.tables WHERE TABLE_SCHEMA='imdb_small' AND TABLE_NAME='movies';`,
 				function (err, results, fields) {
 					connection.release();
 					if (err) console.log(err.message);

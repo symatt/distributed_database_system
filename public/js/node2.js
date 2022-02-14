@@ -43,7 +43,7 @@ $(document).ready(function () {
 		$.ajax({
 			type: "POST",
 			url: "/node2-q",
-			data: { queryInput: $("#queryInput").val(), iso: $("#isolevel").val() },
+			data: { queryInput: $("#queryInput").val(), fail: $("#select-fail").val(), },
 			success: function (result) {
 				// console.log("JQUERY");
 				// console.log(result.datalength);
