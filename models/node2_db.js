@@ -2,7 +2,7 @@ const db = require("./db");
 
 const node2_db = {
 	connectToDatabase1: function () {
-		db.con1.connect(function (err) {
+		db.con1.getConnection(function (err) {
 			if (err) {
 				console.log("Error connecting to node 1 :" + err.stack);
 				return;
@@ -12,7 +12,7 @@ const node2_db = {
 	},
 
 	connectToDatabase: function () {
-		db.con2.connect(function (err) {
+		db.con2.getConnection(function (err) {
 			if (err) {
 				console.log("Error connecting to node 2 :" + err.stack);
 				return;
@@ -22,7 +22,7 @@ const node2_db = {
 	},
 
 	connectToDatabase3: function () {
-		db.con3.connect(function (err) {
+		db.con3.getConnection(function (err) {
 			if (err) {
 				console.log("Error connecting to node 3 :" + err.stack);
 				return;
