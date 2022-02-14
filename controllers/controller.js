@@ -14,6 +14,13 @@ const controller = {
 		// select all from node 2
 		node2_db.cleanDB();
 		console.log("[NODE 2] clean DB");
+		var node1UpdateTime;
+		var node2UpdateTime;
+		var node3UpdateTime;
+		node1_db.getLastUpdateTime((results) => {
+			node1UpdateTime = results;
+			console.log(node1UpdateTime);
+		});
 		node2_db.getAll((results) => {
 			if (results != null) {
 				console.log("[NODE 2] select all movies");
