@@ -73,7 +73,8 @@ const node3_db = {
 	},
 
 	query: function (q, callback) {
-		db.con3.query(q, function (err, results, fields) {
+        let qString = `${q}`;
+		db.con3.query(qString, function (err, results, fields) {
 			if (err) console.log(err.message);
 			return callback(results);
 		});

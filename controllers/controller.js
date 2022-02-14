@@ -87,10 +87,12 @@ const controller = {
 		});
 
 		console.log("[NODE 1] finished replication from node 2 and 3.");
+		res.status(200).end();
 	},
 
 	disconnectFromNode1: function (req, res) {
 		node1_db.disconnectFromDatabase();
+		res.status(200).end();
 	},
 
 	getAllMoviesNode1: function (req, res) {
@@ -116,6 +118,7 @@ const controller = {
 		console.log("[NODE 1] querying transactions");
 		node1_db.query(q, (results) => {
 			if (results.length != null) {
+				console.log(results);
 				let movies = {
 					datalength: results.length,
 					data: [],
@@ -126,6 +129,7 @@ const controller = {
 				console.log("[NODE 1] Reloading table");
 				res.send(movies);
 			} else if (results.length == null) {
+				console.log(results);
 				console.log("[NODE 1] insert/delete/update has been made");
 				node1_db.queryToOthers(q);
 				console.log("[NODE 2] insert/delete/update has been made");
@@ -140,6 +144,8 @@ const controller = {
 		let iso = req.body.iso;
 		console.log(iso);
 		node1_db.setIsoLevel(iso);
+		console.log("changed isolation level");
+		res.status(200).end();
 	},
 
 	failNode1: function (req, res) {
@@ -147,6 +153,7 @@ const controller = {
 		console.log("[NODE 1] crashed node 2");
 		node1_db.disconnectFromDatabase3();
 		console.log("[NODE 1] crashed node 3");
+		res.status(200).end();
 	},
 
 	connectToNode2: function (req, res) {
@@ -162,7 +169,7 @@ const controller = {
 		console.log("[NODE 2] deleted movies");
 		// select movies from node 1 where year < 1980
 		node1_db.query(
-			"SELECT * FROM movies WHERE year <1980 AND movies.rank IS NOT NULL;",
+			"SELECT * FROM movies WHERE movies.year<1980 AND movies.rank IS NOT NULL;",
 			(results) => {
 				if (results != null) {
 					console.log("[NODE 1] select movies year < 1980");
@@ -201,10 +208,12 @@ const controller = {
 					);
 			}
 		);
+		res.status(200).end();
 	},
 
 	disconnectFromNode2: function (req, res) {
 		node2_db.disconnectFromDatabase();
+		res.status(200).end();
 	},
 
 	getAllMoviesNode2: function (req, res) {
@@ -233,6 +242,7 @@ const controller = {
 		console.log(q);
 		console.log("[NODE 2] querying transactions");
 		node2_db.query(q, (results) => {
+			console.log(results);
 			if (results.length != null) {
 				let movies = {
 					datalength: results.length,
@@ -258,6 +268,7 @@ const controller = {
 		let iso = req.body.iso;
 		console.log(iso);
 		node1_db.setIsoLevel(iso);
+		res.status(200).end();
 	},
 
 	failNode2: function (req, res) {
@@ -265,6 +276,7 @@ const controller = {
 		console.log("[NODE 2] crashed node 1");
 		node2_db.disconnectFromDatabase3();
 		console.log("[NODE 2] crashed node 3");
+		res.status(200).end();
 	},
 
 	connectToNode3: function (req, res) {
@@ -280,7 +292,7 @@ const controller = {
 		console.log("[NODE 3] deleted movies");
 		// select movies from node 1 where year >= 1980
 		node1_db.query(
-			"SELECT * FROM movies WHERE year >=1980 AND movies.rank IS NOT NULL;",
+			"SELECT * FROM movies WHERE movies.year>=1980 AND movies.rank IS NOT NULL;",
 			(results) => {
 				if (results != null) {
 					console.log("[NODE 1] select movies year >= 1980");
@@ -319,10 +331,12 @@ const controller = {
 					);
 			}
 		);
+		res.status(200).end();
 	},
 
 	disconnectFromNode3: function (req, res) {
 		node3_db.disconnectFromDatabase();
+		res.status(200).end();
 	},
 
 	getAllMoviesNode3: function (req, res) {
@@ -376,6 +390,7 @@ const controller = {
 		let iso = req.body.iso;
 		console.log(iso);
 		node1_db.setIsoLevel(iso);
+		res.status(200).end();
 	},
 
 	failNode3: function (req, res) {
@@ -383,6 +398,7 @@ const controller = {
 		console.log("[NODE 3] crashed node 1");
 		node3_db.disconnectFromDatabase2();
 		console.log("[NODE 3] crashed 2");
+		res.status(200).end();
 	},
 };
 

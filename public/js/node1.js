@@ -1,7 +1,9 @@
 $(document).ready(function () {
 	$("#node1-connect-btn").click(() => {
 		// console.log("connecting to node 1...");
-		$.get("/node1-connect", (result) => {});
+		$.get("/node1-connect", (result) => {
+			console.log(result);
+		});
 	});
 
 	$("#node1-disconnect-btn").click(() => {
@@ -107,7 +109,7 @@ $(document).ready(function () {
 		});
 	});
 
-    $("#node1-fail-btn").click(() => {
+	$("#node1-fail-btn").click(() => {
 		$.get("/node1-fail", (result) => {});
 	});
 });

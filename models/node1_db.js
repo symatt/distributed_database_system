@@ -62,7 +62,8 @@ const node1_db = {
 	},
 
 	getAll: function (callback) {
-		let q = "SELECT * FROM movies WHERE movies.rank IS NOT NULL LIMIT 5000;";
+		let q =
+			"SELECT * FROM movies WHERE movies.rank IS NOT NULL LIMIT 5000;";
 		db.con1.query(q, function (err, results, fields) {
 			if (err) console.log(err.message);
 			console.log(results);
@@ -72,7 +73,8 @@ const node1_db = {
 	},
 
 	query: function (q, callback) {
-		db.con1.query(q, function (err, results, fields) {
+		let qString = `${q}`;
+		db.con1.query(qString, function (err, results, fields) {
 			if (err) console.log(err.message);
 			return callback(results);
 		});

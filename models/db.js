@@ -6,7 +6,8 @@ const db = {
 		user: "admin",
 		password: "stadvdb12345",
 		port: "3306",
-		database: "imdb_ijs",
+		multipleStatements: true,
+		database: "imdb_small",
 	}),
 
 	con2: mysql.createConnection({
@@ -14,7 +15,8 @@ const db = {
 		user: "admin",
 		password: "stadvdb12345",
 		port: "3303",
-		database: "imdb_ijs",
+		multipleStatements: true,
+		database: "imdb_small",
 	}),
 
 	con3: mysql.createConnection({
@@ -22,7 +24,8 @@ const db = {
 		user: "admin",
 		password: "stadvdb12345",
 		port: "3300",
-		database: "imdb_ijs",
+		multipleStatements: true,
+		database: "imdb_small",
 	}),
 };
 

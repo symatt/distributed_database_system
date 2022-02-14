@@ -29,7 +29,7 @@ app.get(`/node1`, (req, res) => {
 	res.render("node1");
 });
 app.get("/node1-connect", (req, res) => {
-	controller.connectToNode1();
+	controller.connectToNode1(req, res);
 });
 app.get("/node1-disconnect", (req, res) => {
 	controller.disconnectFromNode1();
