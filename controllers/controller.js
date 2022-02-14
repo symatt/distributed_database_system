@@ -359,13 +359,13 @@ const controller = {
 				} else if (results.length == null) {
 					console.log("[NODE 2] insert/delete/update has been made");
 					let fail = req.body.fail;
-					if (fail != 1 || fail != 10) {
+					if (fail != 1 && fail != 10) {
 						node2_db.queryToNode1(q);
 						console.log(
 							"[NODE 1] insert/delete/update has been made"
 						);
 					}
-					if (fail != 3 || fail != 10) {
+					if (fail != 3 && fail != 10) {
 						node2_db.queryToNode3(q);
 						console.log(
 							"[NODE 3] insert/delete/update has been made"
@@ -533,13 +533,13 @@ const controller = {
 				} else if (results.length == null) {
 					console.log("[NODE 3] insert/delete/update has been made");
 					let fail = req.body.fail;
-					if (fail != 1 || fail != 10) {
+					if (fail != 1 && fail != 10) {
 						node3_db.queryToNode1(q);
 						console.log(
 							"[NODE 1] insert/delete/update has been made"
 						);
 					}
-					if (fail != 2 || fail != 10) {
+					if (fail != 2 && fail != 10) {
 						node3_db.queryToNode2(q);
 						console.log(
 							"[NODE 2] insert/delete/update has been made"
