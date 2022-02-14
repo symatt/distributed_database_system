@@ -1,12 +1,13 @@
+const e = require("express");
 const node1_db = require("../models/node1_db");
 const node2_db = require("../models/node2_db");
 const node3_db = require("../models/node3_db");
 
 const controller = {
 	connectToNode1: function (req, res) {
-		node1_db.connectToDatabase();
-		node1_db.connectToDatabase2();
-		node1_db.connectToDatabase3();
+		// node1_db.connectToDatabase();
+		// node1_db.connectToDatabase2();
+		// node1_db.connectToDatabase3();
 		// delete all contents
 		node1_db.query(`DELETE FROM movies;`, (result) => {});
 		console.log("[NODE 1] deleted movies");
@@ -87,13 +88,14 @@ const controller = {
 		});
 
 		console.log("[NODE 1] finished replication from node 2 and 3.");
-		res.status(200).end();
+		// res.status(200).end();
+		res.render("node1");
 	},
 
-	disconnectFromNode1: function (req, res) {
-		node1_db.disconnectFromDatabase();
-		res.status(200).end();
-	},
+	// disconnectFromNode1: function (req, res) {
+	// 	node1_db.disconnectFromDatabase();
+	// 	res.status(200).end();
+	// },
 
 	getAllMoviesNode1: function (req, res) {
 		node1_db.getAll((results) => {
@@ -123,20 +125,37 @@ const controller = {
 			node1_db.query(q, (results) => {
 				if (results.length != null) {
 					console.log(results);
-					let movies = {
-						datalength: results.length,
-						data: [],
-					};
-					results.forEach((RowDataPacket) => {
-						movies.data.push(RowDataPacket);
-					});
-					console.log("[NODE 1] Reloading table");
-					res.send(movies);
+					let len = 0;
+					while (
+						len < results.length &&
+						results[len].length == null
+					) {
+						len++;
+					}
+					if (len >= results.length) {
+						let movies = {
+							datalength: 0,
+							data: [],
+						};
+						res.send(movies);
+					} else {
+						let movies = {
+							datalength: results[len].length,
+							data: [],
+						};
+						results[len].forEach((RowDataPacket) => {
+							movies.data.push(RowDataPacket);
+						});
+						console.log("[NODE 1] Reloading table");
+						console.log(movies);
+						res.send(movies);
+					}
 				} else if (results.length == null) {
 					console.log(results);
 					console.log("[NODE 1] insert/delete/update has been made");
-					node1_db.queryToOthers(q);
+					node1_db.queryToNode2(q);
 					console.log("[NODE 2] insert/delete/update has been made");
+					node1_db.queryToNode3(q);
 					console.log("[NODE 3] insert/delete/update has been made");
 					res.status(200).end();
 				} else {
@@ -150,7 +169,7 @@ const controller = {
 		let iso = req.body.iso;
 		console.log(iso);
 		node1_db.setIsoLevel(iso);
-		console.log("changed isolation level");
+		console.log("[NODE 1] changed isolation level");
 		res.status(200).end();
 	},
 
@@ -163,9 +182,9 @@ const controller = {
 	},
 
 	connectToNode2: function (req, res) {
-		node2_db.connectToDatabase();
-		node2_db.connectToDatabase1();
-		node2_db.connectToDatabase3();
+		// node2_db.connectToDatabase();
+		// node2_db.connectToDatabase1();
+		// node2_db.connectToDatabase3();
 		console.log("[NODE 2] connecting to node 2...");
 		node2_db.cleanDB();
 		console.log("[NODE 2] cleaning up node 2...");
@@ -208,7 +227,8 @@ const controller = {
 							"[NODE 2] finished replication from node 1."
 						);
 					});
-					res.status(200).end();
+					// res.status(200).end();
+					res.render("node2");
 				} else
 					console.log(
 						"[NODE 1] error with select movies year < 1980"
@@ -217,10 +237,10 @@ const controller = {
 		);
 	},
 
-	disconnectFromNode2: function (req, res) {
-		node2_db.disconnectFromDatabase();
-		res.status(200).end();
-	},
+	// disconnectFromNode2: function (req, res) {
+	// 	node2_db.disconnectFromDatabase();
+	// 	res.status(200).end();
+	// },
 
 	getAllMoviesNode2: function (req, res) {
 		node2_db.getAll((results) => {
@@ -253,19 +273,37 @@ const controller = {
 			console.log("[NODE 2] querying transactions");
 			node2_db.query(q, (results) => {
 				if (results.length != null) {
-					let movies = {
-						datalength: results.length,
-						data: [],
-					};
-					results.forEach((RowDataPacket) => {
-						movies.data.push(RowDataPacket);
-					});
-					console.log("[NODE 2] Reloading table");
-					res.send(movies);
+					console.log(results);
+					let len = 0;
+					while (
+						len < results.length &&
+						results[len].length == null
+					) {
+						len++;
+					}
+					if (len >= results.length) {
+						let movies = {
+							datalength: 0,
+							data: [],
+						};
+						res.send(movies);
+					} else {
+						let movies = {
+							datalength: results[len].length,
+							data: [],
+						};
+						results[len].forEach((RowDataPacket) => {
+							movies.data.push(RowDataPacket);
+						});
+						console.log("[NODE 2] Reloading table");
+						console.log(movies);
+						res.send(movies);
+					}
 				} else if (results.length == null) {
 					console.log("[NODE 2] insert/delete/update has been made");
-					node2_db.queryToOthers(q);
+					node2_db.queryToNode1(q);
 					console.log("[NODE 1] insert/delete/update has been made");
+					node2_db.queryToNode3(q);
 					console.log("[NODE 3] insert/delete/update has been made");
 					res.status(200).end();
 				} else {
@@ -278,7 +316,8 @@ const controller = {
 	setIsoLevel2: function (req, res) {
 		let iso = req.body.iso;
 		console.log(iso);
-		node1_db.setIsoLevel(iso);
+		node2_db.setIsoLevel(iso);
+		console.log("[NODE 2] changed isolation level");
 		res.status(200).end();
 	},
 
@@ -291,9 +330,9 @@ const controller = {
 	},
 
 	connectToNode3: function (req, res) {
-		node3_db.connectToDatabase();
-		node3_db.connectToDatabase1();
-		node3_db.connectToDatabase2();
+		// node3_db.connectToDatabase();
+		// node3_db.connectToDatabase1();
+		// node3_db.connectToDatabase2();
 		console.log("[NODE 3] connecting to node 3...");
 		node3_db.cleanDB();
 		console.log("[NODE 3] cleaning up node 3...");
@@ -336,7 +375,8 @@ const controller = {
 							"[NODE 3] finished replication from node 1."
 						);
 					});
-					res.status(200).end();
+					// res.status(200).end();
+					res.render("node3");
 				} else
 					console.log(
 						"[NODE 1] error with select movies where year >= 1980"
@@ -345,10 +385,10 @@ const controller = {
 		);
 	},
 
-	disconnectFromNode3: function (req, res) {
-		node3_db.disconnectFromDatabase();
-		res.status(200).end();
-	},
+	// disconnectFromNode3: function (req, res) {
+	// 	node3_db.disconnectFromDatabase();
+	// 	res.status(200).end();
+	// },
 
 	getAllMoviesNode3: function (req, res) {
 		node3_db.getAll((results) => {
@@ -380,20 +420,40 @@ const controller = {
 		} else {
 			console.log("[NODE 3] querying transactions");
 			node3_db.query(q, (results) => {
+				console.log(results.length);
 				if (results.length != null) {
-					let movies = {
-						datalength: results.length,
-						data: [],
-					};
-					results.forEach((RowDataPacket) => {
-						movies.data.push(RowDataPacket);
-					});
-					console.log("[NODE 3] Reloading table");
-					res.send(movies);
+					console.log(results);
+					let len = 0;
+					while (
+						len < results.length &&
+						results[len].length == null
+					) {
+						console.log(results[len]);
+						len++;
+					}
+					if (len >= results.length) {
+						let movies = {
+							datalength: 0,
+							data: [],
+						};
+						res.send(movies);
+					} else {
+						let movies = {
+							datalength: results[len].length,
+							data: [],
+						};
+						results[len].forEach((RowDataPacket) => {
+							movies.data.push(RowDataPacket);
+						});
+						console.log("[NODE 3] Reloading table");
+						console.log(movies);
+						res.send(movies);
+					}
 				} else if (results.length == null) {
 					console.log("[NODE 3] insert/delete/update has been made");
-					node3_db.queryToOthers(q);
+					node3_db.queryToNode1(q);
 					console.log("[NODE 1] insert/delete/update has been made");
+					node3_db.queryToNode2(q);
 					console.log("[NODE 2] insert/delete/update has been made");
 					res.status(200).end();
 				} else {
@@ -406,7 +466,8 @@ const controller = {
 	setIsoLevel3: function (req, res) {
 		let iso = req.body.iso;
 		console.log(iso);
-		node1_db.setIsoLevel(iso);
+		node3_db.setIsoLevel(iso);
+		console.log("[NODE 3] changed isolation level");
 		res.status(200).end();
 	},
 

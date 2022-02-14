@@ -43,7 +43,7 @@ $(document).ready(function () {
 		$.ajax({
 			type: "POST",
 			url: "/node2-q",
-			data: { queryInput: $("#queryInput").val() },
+			data: { queryInput: $("#queryInput").val(), iso: $("#isolevel").val() },
 			success: function (result) {
 				// console.log("JQUERY");
 				// console.log(result.datalength);
@@ -86,26 +86,26 @@ $(document).ready(function () {
 		});
 	});
 
-	$("#isolevel").change(() => {
-		// console.log("changed iso level");
-		$.ajax({
-			type: "POST",
-			url: "/node2-isolevel",
-			data: { iso: $("#isolevel").val() },
-			success: function (result) {
-				console.log("CHANGED ISO LEVEL");
-			},
-			error: function (jqXHR, textStatus, errorThrown) {
-				alert(
-					"Error, status = " +
-						textStatus +
-						", " +
-						"error thrown: " +
-						errorThrown
-				);
-			},
-		});
-	});
+	// $("#isolevel").change(() => {
+	// 	// console.log("changed iso level");
+	// 	$.ajax({
+	// 		type: "POST",
+	// 		url: "/node2-isolevel",
+	// 		data: { iso: $("#isolevel").val() },
+	// 		success: function (result) {
+	// 			console.log("CHANGED ISO LEVEL");
+	// 		},
+	// 		error: function (jqXHR, textStatus, errorThrown) {
+	// 			alert(
+	// 				"Error, status = " +
+	// 					textStatus +
+	// 					", " +
+	// 					"error thrown: " +
+	// 					errorThrown
+	// 			);
+	// 		},
+	// 	});
+	// });
 
 	$("#node2-fail-btn").click(() => {
 		$.get("/node2-fail", (result) => {});
