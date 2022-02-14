@@ -252,7 +252,7 @@ const controller = {
 		} else {
 			console.log("[NODE 2] querying transactions");
 			node2_db.query(q, (results) => {
-				console.log(results);
+				//console.log(results);
 				if (results.length != null) {
 					let movies = {
 						datalength: results.length,
@@ -278,7 +278,7 @@ const controller = {
 	setIsoLevel2: function (req, res) {
 		let iso = req.body.iso;
 		console.log(iso);
-		node1_db.setIsoLevel(iso);
+		node2_db.setIsoLevel(iso);
 		res.status(200).end();
 	},
 
@@ -406,7 +406,7 @@ const controller = {
 	setIsoLevel3: function (req, res) {
 		let iso = req.body.iso;
 		console.log(iso);
-		node1_db.setIsoLevel(iso);
+		node3_db.setIsoLevel(iso);
 		res.status(200).end();
 	},
 
