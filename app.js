@@ -52,10 +52,10 @@ app.get(`/node2`, (req, res) => {
 	res.render("node2");
 });
 app.get("/node2-connect", (req, res) => {
-	controller.connectToNode2();
+	controller.connectToNode2(req, res);
 });
 app.get("/node2-disconnect", (req, res) => {
-	controller.disconnectFromNode2();
+	controller.disconnectFromNode2(req, res);
 });
 
 app.get("/node2_getAll", (req, res) => {
@@ -76,10 +76,10 @@ app.get(`/node3`, (req, res) => {
 	res.render("node3");
 });
 app.get("/node3-connect", (req, res) => {
-	controller.connectToNode3();
+	controller.connectToNode3(req, res);
 });
 app.get("/node3-disconnect", (req, res) => {
-	controller.disconnectFromNode3();
+	controller.disconnectFromNode3(req, res);
 });
 
 app.get("/node3_getAll", (req, res) => {

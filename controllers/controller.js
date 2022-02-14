@@ -115,29 +115,34 @@ const controller = {
 	queryNode1: function (req, res) {
 		let q = req.body.queryInput;
 		console.log(q);
-		console.log("[NODE 1] querying transactions");
-		node1_db.query(q, (results) => {
-			if (results.length != null) {
-				console.log(results);
-				let movies = {
-					datalength: results.length,
-					data: [],
-				};
-				results.forEach((RowDataPacket) => {
-					movies.data.push(RowDataPacket);
-				});
-				console.log("[NODE 1] Reloading table");
-				res.send(movies);
-			} else if (results.length == null) {
-				console.log(results);
-				console.log("[NODE 1] insert/delete/update has been made");
-				node1_db.queryToOthers(q);
-				console.log("[NODE 2] insert/delete/update has been made");
-				console.log("[NODE 3] insert/delete/update has been made");
-			} else {
-				console.log("[NODE 1] ERROR QUERY");
-			}
-		});
+		if (q === "") {
+			console.log("QUERY EMPTY");
+			res.status(404).end();
+		} else {
+			console.log("[NODE 1] querying transactions");
+			node1_db.query(q, (results) => {
+				if (results.length != null) {
+					console.log(results);
+					let movies = {
+						datalength: results.length,
+						data: [],
+					};
+					results.forEach((RowDataPacket) => {
+						movies.data.push(RowDataPacket);
+					});
+					console.log("[NODE 1] Reloading table");
+					res.send(movies);
+				} else if (results.length == null) {
+					console.log(results);
+					console.log("[NODE 1] insert/delete/update has been made");
+					node1_db.queryToOthers(q);
+					console.log("[NODE 2] insert/delete/update has been made");
+					console.log("[NODE 3] insert/delete/update has been made");
+				} else {
+					console.log("[NODE 1] ERROR QUERY");
+				}
+			});
+		}
 	},
 
 	setIsoLevel1: function (req, res) {
@@ -241,28 +246,33 @@ const controller = {
 
 		let q = req.body.queryInput;
 		console.log(q);
-		console.log("[NODE 2] querying transactions");
-		node2_db.query(q, (results) => {
-			console.log(results);
-			if (results.length != null) {
-				let movies = {
-					datalength: results.length,
-					data: [],
-				};
-				results.forEach((RowDataPacket) => {
-					movies.data.push(RowDataPacket);
-				});
-				console.log("[NODE 2] Reloading table");
-				res.send(movies);
-			} else if (results.length == null) {
-				console.log("[NODE 2] insert/delete/update has been made");
-				node2_db.queryToOthers(q);
-				console.log("[NODE 1] insert/delete/update has been made");
-				console.log("[NODE 3] insert/delete/update has been made");
-			} else {
-				console.log("[NODE 2] ERROR QUERY");
-			}
-		});
+		if (q === "") {
+			console.log("QUERY EMPTY");
+			res.status(404).end();
+		} else {
+			console.log("[NODE 2] querying transactions");
+			node2_db.query(q, (results) => {
+				console.log(results);
+				if (results.length != null) {
+					let movies = {
+						datalength: results.length,
+						data: [],
+					};
+					results.forEach((RowDataPacket) => {
+						movies.data.push(RowDataPacket);
+					});
+					console.log("[NODE 2] Reloading table");
+					res.send(movies);
+				} else if (results.length == null) {
+					console.log("[NODE 2] insert/delete/update has been made");
+					node2_db.queryToOthers(q);
+					console.log("[NODE 1] insert/delete/update has been made");
+					console.log("[NODE 3] insert/delete/update has been made");
+				} else {
+					console.log("[NODE 2] ERROR QUERY");
+				}
+			});
+		}
 	},
 
 	setIsoLevel2: function (req, res) {
@@ -365,27 +375,32 @@ const controller = {
 
 		let q = req.body.queryInput;
 		console.log(q);
-		console.log("[NODE 3] querying transactions");
-		node3_db.query(q, (results) => {
-			if (results.length != null) {
-				let movies = {
-					datalength: results.length,
-					data: [],
-				};
-				results.forEach((RowDataPacket) => {
-					movies.data.push(RowDataPacket);
-				});
-				console.log("[NODE 3] Reloading table");
-				res.send(movies);
-			} else if (results.length == null) {
-				console.log("[NODE 3] insert/delete/update has been made");
-				node3_db.queryToOthers(q);
-				console.log("[NODE 1] insert/delete/update has been made");
-				console.log("[NODE 2] insert/delete/update has been made");
-			} else {
-				console.log("[NODE 3] ERROR QUERY");
-			}
-		});
+		if (q === "") {
+			console.log("QUERY EMPTY");
+			res.status(404).end();
+		} else {
+			console.log("[NODE 3] querying transactions");
+			node3_db.query(q, (results) => {
+				if (results.length != null) {
+					let movies = {
+						datalength: results.length,
+						data: [],
+					};
+					results.forEach((RowDataPacket) => {
+						movies.data.push(RowDataPacket);
+					});
+					console.log("[NODE 3] Reloading table");
+					res.send(movies);
+				} else if (results.length == null) {
+					console.log("[NODE 3] insert/delete/update has been made");
+					node3_db.queryToOthers(q);
+					console.log("[NODE 1] insert/delete/update has been made");
+					console.log("[NODE 2] insert/delete/update has been made");
+				} else {
+					console.log("[NODE 3] ERROR QUERY");
+				}
+			});
+		}
 	},
 
 	setIsoLevel3: function (req, res) {
