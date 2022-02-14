@@ -190,12 +190,16 @@ const controller = {
 						console.log(
 							"[NODE 2] insert/delete/update has been made"
 						);
+						node2_db.cleanDB();
+						console.log("[NODE 2] clean DB");
 					}
 					if (fail != 3 && fail != 10) {
 						node1_db.queryToNode3(q);
 						console.log(
 							"[NODE 3] insert/delete/update has been made"
 						);
+						node3_db.cleanDB();
+						console.log("[NODE 3] clean DB");
 					}
 					res.status(200).end();
 				} else {
@@ -366,6 +370,8 @@ const controller = {
 						console.log(
 							"[NODE 3] insert/delete/update has been made"
 						);
+						node3_db.cleanDB();
+						console.log("[NODE 3] clean DB");
 					}
 					res.status(200).end();
 				} else {
@@ -538,6 +544,8 @@ const controller = {
 						console.log(
 							"[NODE 2] insert/delete/update has been made"
 						);
+						node2_db.cleanDB();
+						console.log("[NODE 2] clean DB");
 					}
 					res.status(200).end();
 				} else {
