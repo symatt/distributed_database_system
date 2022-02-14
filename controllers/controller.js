@@ -195,6 +195,7 @@ const controller = {
 					});
 
 					insertString = insertString.slice(0, -2);
+					insertString = insertString.concat(`;`);
 					console.log(insertString);
 
 					node2_db.query(insertString, (results) => {
@@ -318,6 +319,7 @@ const controller = {
 					});
 
 					insertString = insertString.slice(0, -2);
+					insertString = insertString.concat(`;`);
 					console.log(insertString);
 
 					node3_db.query(insertString, (results) => {
