@@ -138,6 +138,7 @@ const controller = {
 					node1_db.queryToOthers(q);
 					console.log("[NODE 2] insert/delete/update has been made");
 					console.log("[NODE 3] insert/delete/update has been made");
+					res.status(200).end();
 				} else {
 					console.log("[NODE 1] ERROR QUERY");
 				}
@@ -200,7 +201,6 @@ const controller = {
 					});
 
 					insertString = insertString.slice(0, -2);
-					insertString = insertString.concat(`;`);
 					console.log(insertString);
 
 					node2_db.query(insertString, (results) => {
@@ -208,13 +208,13 @@ const controller = {
 							"[NODE 2] finished replication from node 1."
 						);
 					});
+					res.status(200).end();
 				} else
 					console.log(
 						"[NODE 1] error with select movies year < 1980"
 					);
 			}
 		);
-		res.status(200).end();
 	},
 
 	disconnectFromNode2: function (req, res) {
@@ -252,7 +252,6 @@ const controller = {
 		} else {
 			console.log("[NODE 2] querying transactions");
 			node2_db.query(q, (results) => {
-				console.log(results);
 				if (results.length != null) {
 					let movies = {
 						datalength: results.length,
@@ -268,6 +267,7 @@ const controller = {
 					node2_db.queryToOthers(q);
 					console.log("[NODE 1] insert/delete/update has been made");
 					console.log("[NODE 3] insert/delete/update has been made");
+					res.status(200).end();
 				} else {
 					console.log("[NODE 2] ERROR QUERY");
 				}
@@ -329,7 +329,6 @@ const controller = {
 					});
 
 					insertString = insertString.slice(0, -2);
-					insertString = insertString.concat(`;`);
 					console.log(insertString);
 
 					node3_db.query(insertString, (results) => {
@@ -337,13 +336,13 @@ const controller = {
 							"[NODE 3] finished replication from node 1."
 						);
 					});
+					res.status(200).end();
 				} else
 					console.log(
 						"[NODE 1] error with select movies where year >= 1980"
 					);
 			}
 		);
-		res.status(200).end();
 	},
 
 	disconnectFromNode3: function (req, res) {
@@ -396,6 +395,7 @@ const controller = {
 					node3_db.queryToOthers(q);
 					console.log("[NODE 1] insert/delete/update has been made");
 					console.log("[NODE 2] insert/delete/update has been made");
+					res.status(200).end();
 				} else {
 					console.log("[NODE 3] ERROR QUERY");
 				}
