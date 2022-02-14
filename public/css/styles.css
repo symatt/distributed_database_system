@@ -1,0 +1,33 @@
+body {
+    background-color:#c6cac3;
+    margin: 0;
+    margin: auto;
+    text-align: center;
+	font-family: sans-serif;
+
+}
+
+#homeBtn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+table {
+    margin: auto;
+    background-color: white;
+    border-radius: 2px;
+    width: 700px;
+    margin-bottom: 100px;
+    
+}
+
+th, td {
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+h3 {
+    display: inline-block;
+    margin-bottom: 20px;
+}
