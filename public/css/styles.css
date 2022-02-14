@@ -7,6 +7,10 @@ body {
 
 }
 
+h1 {
+    font-weight: 900;
+}
+
 #homeBtn {
     position: absolute;
     top: 10px;
