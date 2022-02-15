@@ -11,11 +11,11 @@
         <script src="/js/node3.js"></script>
     </head>
     <body>
-        <h1>this is node 3</h1>
-        <h1>This is the node that contains movies from 1980 onwards.</h1>
-        <a href="/"><button>return to home</button></a>
+        <h1>Node 3</h1>
+        <h4>This is the node that contains movies from 1980 onwards.</h4>
+        <a href="/"><button id="homeBtn">Return to home</button></a>
         <br>
-        <br>
+
         <label for="select-fail">Choose nodes to fail:</label>
         <select name="select-fail" id="select-fail" >
             <option value="0" selected>NONE</option>
@@ -25,7 +25,7 @@
         </select>
         <br>
         <br>
-        <button id="node3-qAll-btn">Get All Movies (5000 limit)</button>
+        <button id="node3-qAll-btn" class="nodeBtns">Get All Movies (5000 limit)</button>
         <br>
         <br>
         <textarea rows=20 cols=100 name="queryInput" id="queryInput" placeholder="Query" required></textarea> <br>
