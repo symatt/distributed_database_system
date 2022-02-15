@@ -2,7 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const hbs = require("hbs");
 const path = require("path");
-const controller = require("controllers/controller");
+const controller = require("./controllers/controller");
 const req = require("express/lib/request");
 const res = require("express/lib/response");
 
