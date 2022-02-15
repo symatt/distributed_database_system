@@ -2,6 +2,7 @@ const e = require("express");
 const node1_db = require("../models/node1_db");
 const node2_db = require("../models/node2_db");
 const node3_db = require("../models/node3_db");
+const nodeTime_db = require("../models/nodeTime_db");
 
 const controller = {
 	connectToNode1: function (req, res) {
@@ -15,111 +16,102 @@ const controller = {
 		var node1UpdateTime;
 		var node2UpdateTime;
 		var node3UpdateTime;
-		node1_db.getLastUpdateTime((results) => {
-			node1UpdateTime = results;
-			console.log(node1UpdateTime[0].utime);
-			node2_db.getLastUpdateTime((results) => {
-				node2UpdateTime = results;
-				console.log(node2UpdateTime[0].utime);
-				node3_db.getLastUpdateTime((results) => {
-					node3UpdateTime = results;
-					console.log(node3UpdateTime[0].utime);
-
-					if (node2UpdateTime[0].utime > node1UpdateTime[0].utime) {
-						node1_db.query(
-							`DELETE FROM movies WHERE movies.year < 1980;`,
-							(result) => {}
-						);
-						console.log("[NODE 1] deleted movies (<1980)");
-						node2_db.getAll((results) => {
-							if (results != null) {
-								console.log("[NODE 2] select all movies");
-								let movies = {
-									datalength: results.length,
-									data: [],
-								};
-								results.forEach((RowDataPacket) => {
-									movies.data.push(RowDataPacket);
-								});
-								// insert to central
-								var insertString = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank) 
-                                        VALUES `;
-								movies.data.forEach((row) => {
-									console.log(row);
-									//let q = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank)
-									//VALUES (${row.id}, "${row.name}", ${row.year}, ${row.rank});`;
-
-									insertString = insertString.concat(
-										`(${row.id}, "${row.name}", ${row.year}, ${row.rank}), `
-									);
-									console.log("Added to string node 2");
-								});
-
-								insertString = insertString.slice(0, -2);
-								console.log(insertString);
-
-								node1_db.query(insertString, (results) => {
-									console.log(
-										"[NODE 1] replication of 1 row from node 2 complete."
-									);
-								});
-							} else
-								console.log("[NODE 2] error with select all");
+		nodeTime_db.getUpdateTimes((results) => {
+			node1UpdateTime = results[0].time;
+			console.log(node1UpdateTime);
+			node2UpdateTime = results[1].time;
+			console.log(node2UpdateTime);
+			node3UpdateTime = results[2].time;
+			console.log(node3UpdateTime);
+			if (node2UpdateTime > node1UpdateTime) {
+				node1_db.query(
+					`DELETE FROM movies WHERE movies.year < 1980;`,
+					(result) => {}
+				);
+				console.log("[NODE 1] deleted movies (<1980)");
+				node2_db.getAll((results) => {
+					if (results != null) {
+						console.log("[NODE 2] select all movies");
+						let movies = {
+							datalength: results.length,
+							data: [],
+						};
+						results.forEach((RowDataPacket) => {
+							movies.data.push(RowDataPacket);
 						});
-					} else console.log("Node 1 upto date from node 2.");
-					if (node3UpdateTime[0].utime > node1UpdateTime[0].utime) {
-						node1_db.query(
-							`DELETE FROM movies WHERE movies.year >= 1980;`,
-							(result) => {}
-						);
-						console.log("[NODE 1] deleted movies (>=1980)");
-						// select all from node 3
-						node3_db.cleanDB();
-						console.log("[NODE 3] clean DB");
-						node3_db.getAll((results) => {
-							if (results != null) {
-								console.log("[NODE 3] select all movies");
-								let movies = {
-									datalength: results.length,
-									data: [],
-								};
-								results.forEach((RowDataPacket) => {
-									movies.data.push(RowDataPacket);
-								});
-								// insert to central
-								var insertString = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank) 
+						// insert to central
+						var insertString = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank) 
                                         VALUES `;
-								movies.data.forEach((row) => {
-									console.log(row);
-									//let q = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank)
-									//VALUES (${row.id}, "${row.name}", ${row.year}, ${row.rank});`;
+						movies.data.forEach((row) => {
+							console.log(row);
+							//let q = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank)
+							//VALUES (${row.id}, "${row.name}", ${row.year}, ${row.rank});`;
 
-									insertString = insertString.concat(
-										`(${row.id}, "${row.name}", ${row.year}, ${row.rank}), `
-									);
-									console.log("Added to string node 3");
-								});
-
-								insertString = insertString.slice(0, -2);
-								console.log(insertString);
-
-								node1_db.query(insertString, (results) => {
-									console.log(
-										"[NODE 1] replication of 1 row from node 3 complete."
-									);
-								});
-							} else
-								console.log("[NODE 3] error with select all");
+							insertString = insertString.concat(
+								`(${row.id}, "${row.name}", ${row.year}, ${row.rank}), `
+							);
+							console.log("Added to string node 2");
 						});
 
-						console.log(
-							"[NODE 1] finished replication from node 2 and 3."
-						);
-						// res.status(200).end();
-					} else console.log("Node 1 upto date from node 3.");
-					res.render("node1");
+						insertString = insertString.slice(0, -2);
+						console.log(insertString);
+
+						node1_db.query(insertString, (results) => {
+							console.log(
+								"[NODE 1] replication of 1 row from node 2 complete."
+							);
+						});
+					} else console.log("[NODE 2] error with select all");
 				});
-			});
+			} else console.log("Node 1 upto date from node 2.");
+			if (node3UpdateTime > node1UpdateTime) {
+				node1_db.query(
+					`DELETE FROM movies WHERE movies.year >= 1980;`,
+					(result) => {}
+				);
+				console.log("[NODE 1] deleted movies (>=1980)");
+				// select all from node 3
+				node3_db.cleanDB();
+				console.log("[NODE 3] clean DB");
+				node3_db.getAll((results) => {
+					if (results != null) {
+						console.log("[NODE 3] select all movies");
+						let movies = {
+							datalength: results.length,
+							data: [],
+						};
+						results.forEach((RowDataPacket) => {
+							movies.data.push(RowDataPacket);
+						});
+						// insert to central
+						var insertString = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank) 
+                                        VALUES `;
+						movies.data.forEach((row) => {
+							console.log(row);
+							//let q = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank)
+							//VALUES (${row.id}, "${row.name}", ${row.year}, ${row.rank});`;
+
+							insertString = insertString.concat(
+								`(${row.id}, "${row.name}", ${row.year}, ${row.rank}), `
+							);
+							console.log("Added to string node 3");
+						});
+
+						insertString = insertString.slice(0, -2);
+						console.log(insertString);
+
+						node1_db.query(insertString, (results) => {
+							console.log(
+								"[NODE 1] replication of 1 row from node 3 complete."
+							);
+						});
+					} else console.log("[NODE 3] error with select all");
+				});
+
+				console.log("[NODE 1] finished replication from node 2 and 3.");
+				// res.status(200).end();
+			} else console.log("Node 1 upto date from node 3.");
+			res.render("node1");
 		});
 	},
 
@@ -182,6 +174,12 @@ const controller = {
 						res.send(movies);
 					}
 				} else if (results.length == null) {
+					let currTime = new Date()
+						.toISOString()
+						.slice(0, 19)
+						.replace("T", " ");
+					nodeTime_db.updateTime(1, currTime);
+					console.log("[NODE 1] update TIME");
 					console.log(results);
 					console.log("[NODE 1] insert/delete/update has been made");
 					let fail = req.body.fail;
@@ -192,6 +190,8 @@ const controller = {
 						);
 						node2_db.cleanDB();
 						console.log("[NODE 2] clean DB");
+						nodeTime_db.updateTime(2, currTime);
+						console.log("[NODE 2] update TIME");
 					}
 					if (fail != 3 && fail != 10) {
 						node1_db.queryToNode3(q);
@@ -200,6 +200,8 @@ const controller = {
 						);
 						node3_db.cleanDB();
 						console.log("[NODE 3] clean DB");
+						nodeTime_db.updateTime(3, currTime);
+						console.log("[NODE 3] update TIME");
 					}
 					res.status(200).end();
 				} else {
@@ -234,63 +236,59 @@ const controller = {
 		console.log("[NODE 2] cleaning up node 2...");
 		var node1UpdateTime;
 		var node2UpdateTime;
-		node1_db.getLastUpdateTime((results) => {
-			node1UpdateTime = results;
-			console.log(node1UpdateTime[0].utime);
-			node2_db.getLastUpdateTime((results) => {
-				node2UpdateTime = results;
-				console.log(node2UpdateTime[0].utime);
+		nodeTime_db.getUpdateTimes((results) => {
+			node1UpdateTime = results[0].time;
+			console.log(node1UpdateTime);
+			node2UpdateTime = results[1].time;
+			console.log(node2UpdateTime);
 
-				if (node1UpdateTime[0].utime > node2UpdateTime[0].utime) {
-					// delete all contents
-					node2_db.query(`DELETE FROM movies;`, (result) => {});
-					console.log("[NODE 2] deleted movies");
-					// select movies from node 1 where year < 1980
-					node1_db.query(
-						"SELECT * FROM movies WHERE movies.year<1980 AND movies.rank IS NOT NULL;",
-						(results) => {
-							if (results != null) {
-								console.log(
-									"[NODE 1] select movies year < 1980"
+			if (node1UpdateTime > node2UpdateTime) {
+				// delete all contents
+				node2_db.query(`DELETE FROM movies;`, (result) => {});
+				console.log("[NODE 2] deleted movies");
+				// select movies from node 1 where year < 1980
+				node1_db.query(
+					"SELECT * FROM movies WHERE movies.year<1980 AND movies.rank IS NOT NULL;",
+					(results) => {
+						if (results != null) {
+							console.log("[NODE 1] select movies year < 1980");
+							let movies = {
+								datalength: results.length,
+								data: [],
+							};
+							results.forEach((RowDataPacket) => {
+								movies.data.push(RowDataPacket);
+							});
+							// insert to node 2
+							var insertString = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank) VALUES `;
+							movies.data.forEach((row) => {
+								console.log(row);
+								//let q = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank)
+								//VALUES (${row.id}, "${row.name}", ${row.year}, ${row.rank});`;
+
+								insertString = insertString.concat(
+									`(${row.id}, "${row.name}", ${row.year}, ${row.rank}), `
 								);
-								let movies = {
-									datalength: results.length,
-									data: [],
-								};
-								results.forEach((RowDataPacket) => {
-									movies.data.push(RowDataPacket);
-								});
-								// insert to node 2
-								var insertString = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank) VALUES `;
-								movies.data.forEach((row) => {
-									console.log(row);
-									//let q = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank)
-									//VALUES (${row.id}, "${row.name}", ${row.year}, ${row.rank});`;
+								console.log("Added to string node 1");
+							});
 
-									insertString = insertString.concat(
-										`(${row.id}, "${row.name}", ${row.year}, ${row.rank}), `
-									);
-									console.log("Added to string node 1");
-								});
+							insertString = insertString.slice(0, -2);
+							console.log(insertString);
 
-								insertString = insertString.slice(0, -2);
-								console.log(insertString);
-
-								node2_db.query(insertString, (results) => {
-									console.log(
-										"[NODE 2] finished replication from node 1."
-									);
-								});
-								// res.status(200).end();
-							} else
+							node2_db.query(insertString, (results) => {
 								console.log(
-									"[NODE 1] error with select movies year < 1980"
+									"[NODE 2] finished replication from node 1."
 								);
-						}
-					);
-				} else console.log("Node 2 upto date from node 1.");
-				res.render("node2");
-			});
+							});
+							// res.status(200).end();
+						} else
+							console.log(
+								"[NODE 1] error with select movies year < 1980"
+							);
+					}
+				);
+			} else console.log("Node 2 upto date from node 1.");
+			res.render("node2");
 		});
 	},
 
@@ -357,6 +355,12 @@ const controller = {
 						res.send(movies);
 					}
 				} else if (results.length == null) {
+					let currTime = new Date()
+						.toISOString()
+						.slice(0, 19)
+						.replace("T", " ");
+					nodeTime_db.updateTime(2, currTime);
+					console.log("[NODE 2] update TIME");
 					console.log("[NODE 2] insert/delete/update has been made");
 					let fail = req.body.fail;
 					if (fail != 1 && fail != 10) {
@@ -364,6 +368,8 @@ const controller = {
 						console.log(
 							"[NODE 1] insert/delete/update has been made"
 						);
+						nodeTime_db.updateTime(1, currTime);
+						console.log("[NODE 1] update TIME");
 					}
 					if (fail != 3 && fail != 10) {
 						node2_db.queryToNode3(q);
@@ -372,6 +378,8 @@ const controller = {
 						);
 						node3_db.cleanDB();
 						console.log("[NODE 3] clean DB");
+						nodeTime_db.updateTime(3, currTime);
+						console.log("[NODE 3] update TIME");
 					}
 					res.status(200).end();
 				} else {
@@ -406,63 +414,59 @@ const controller = {
 		console.log("[NODE 3] cleaning up node 3...");
 		var node1UpdateTime;
 		var node3UpdateTime;
-		node1_db.getLastUpdateTime((results) => {
-			node1UpdateTime = results;
-			console.log(node1UpdateTime[0].utime);
-			node3_db.getLastUpdateTime((results) => {
-				node3UpdateTime = results;
-				console.log(node3UpdateTime[0].utime);
+		nodeTime_db.getUpdateTimes((results) => {
+			node1UpdateTime = results[0].time;
+			console.log(node1UpdateTime);
+			node3UpdateTime = results[2].time;
+			console.log(node3UpdateTime);
 
-				if (node1UpdateTime[0].utime > node3UpdateTime[0].utime) {
-					// delete all contents
-					node3_db.query(`DELETE FROM movies;`, (result) => {});
-					console.log("[NODE 3] deleted movies");
-					// select movies from node 1 where year >= 1980
-					node1_db.query(
-						"SELECT * FROM movies WHERE movies.year>=1980 AND movies.rank IS NOT NULL;",
-						(results) => {
-							if (results != null) {
-								console.log(
-									"[NODE 1] select movies year >= 1980"
+			if (node1UpdateTime > node3UpdateTime) {
+				// delete all contents
+				node3_db.query(`DELETE FROM movies;`, (result) => {});
+				console.log("[NODE 3] deleted movies");
+				// select movies from node 1 where year >= 1980
+				node1_db.query(
+					"SELECT * FROM movies WHERE movies.year>=1980 AND movies.rank IS NOT NULL;",
+					(results) => {
+						if (results != null) {
+							console.log("[NODE 1] select movies year >= 1980");
+							let movies = {
+								datalength: results.length,
+								data: [],
+							};
+							results.forEach((RowDataPacket) => {
+								movies.data.push(RowDataPacket);
+							});
+							// insert to node 3
+							var insertString = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank) VALUES `;
+							movies.data.forEach((row) => {
+								console.log(row);
+								//let q = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank)
+								//VALUES (${row.id}, "${row.name}", ${row.year}, ${row.rank});`;
+
+								insertString = insertString.concat(
+									`(${row.id}, "${row.name}", ${row.year}, ${row.rank}), `
 								);
-								let movies = {
-									datalength: results.length,
-									data: [],
-								};
-								results.forEach((RowDataPacket) => {
-									movies.data.push(RowDataPacket);
-								});
-								// insert to node 3
-								var insertString = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank) VALUES `;
-								movies.data.forEach((row) => {
-									console.log(row);
-									//let q = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank)
-									//VALUES (${row.id}, "${row.name}", ${row.year}, ${row.rank});`;
+								console.log("Added to string node 1");
+							});
 
-									insertString = insertString.concat(
-										`(${row.id}, "${row.name}", ${row.year}, ${row.rank}), `
-									);
-									console.log("Added to string node 1");
-								});
+							insertString = insertString.slice(0, -2);
+							console.log(insertString);
 
-								insertString = insertString.slice(0, -2);
-								console.log(insertString);
-
-								node3_db.query(insertString, (results) => {
-									console.log(
-										"[NODE 3] finished replication from node 1."
-									);
-								});
-								// res.status(200).end();
-							} else
+							node3_db.query(insertString, (results) => {
 								console.log(
-									"[NODE 1] error with select movies where year >= 1980"
+									"[NODE 3] finished replication from node 1."
 								);
-						}
-					);
-				} else console.log("Node 3 upto date from node 1.");
-				res.render("node3");
-			});
+							});
+							// res.status(200).end();
+						} else
+							console.log(
+								"[NODE 1] error with select movies where year >= 1980"
+							);
+					}
+				);
+			} else console.log("Node 3 upto date from node 1.");
+			res.render("node3");
 		});
 	},
 
@@ -531,6 +535,12 @@ const controller = {
 						res.send(movies);
 					}
 				} else if (results.length == null) {
+					let currTime = new Date()
+						.toISOString()
+						.slice(0, 19)
+						.replace("T", " ");
+					nodeTime_db.updateTime(3, currTime);
+					console.log("[NODE 3] update TIME");
 					console.log("[NODE 3] insert/delete/update has been made");
 					let fail = req.body.fail;
 					if (fail != 1 && fail != 10) {
@@ -538,6 +548,8 @@ const controller = {
 						console.log(
 							"[NODE 1] insert/delete/update has been made"
 						);
+						nodeTime_db.updateTime(1, currTime);
+						console.log("[NODE 1] update TIME");
 					}
 					if (fail != 2 && fail != 10) {
 						node3_db.queryToNode2(q);
@@ -546,6 +558,8 @@ const controller = {
 						);
 						node2_db.cleanDB();
 						console.log("[NODE 2] clean DB");
+						nodeTime_db.updateTime(2, currTime);
+						console.log("[NODE 2] update TIME");
 					}
 					res.status(200).end();
 				} else {

@@ -30,6 +30,16 @@ const db = {
 		multipleStatements: true,
 		database: "imdb_small",
 	}),
+
+	conTime: mysql.createPool({
+		connectionLimit: 20,
+		host: "stadvdb-mco2-node-times.c8pv2rlf7hct.us-east-1.rds.amazonaws.com",
+		user: "admin",
+		password: "stadvdb12345",
+		port: "3309",
+		multipleStatements: true,
+		database: "node_times",
+	}),
 };
 
 module.exports = db;

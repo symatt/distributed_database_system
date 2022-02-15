@@ -84,6 +84,7 @@ const node1_db = {
 				connection.release();
 				if (err) console.log(err.message);
 				return callback(results);
+				
 			});
 		});
 	},
