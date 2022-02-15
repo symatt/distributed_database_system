@@ -1,6 +1,7 @@
 const db = require("./db");
 
 const nodeTime_db = {
+    // gets the table from nodes
 	getUpdateTimes: function (callback) {
 		let q = "SELECT * FROM nodes;";
 		db.conTime.getConnection(function (err, connection) {
@@ -15,6 +16,7 @@ const nodeTime_db = {
 		});
 	},
 
+    // updates a certain node's last time updated
 	updateTime: function (node, time) {
 		let q = `UPDATE nodes SET time = '${time}' WHERE node = ${node};`;
 		db.conTime.getConnection(function (err, connection) {
