@@ -32,13 +32,14 @@ const nodeTime_db = {
 	},
 
 	// updates a certain node's last time updated
-	updateTime: function (node, time) {
+	updateTime: function (node, time, callback) {
 		let q = `UPDATE nodes SET time = '${time}' WHERE node = ${node};`;
 		db.conTime.getConnection(function (err, connection) {
 			if (err) throw err;
 			db.conTime.query(q, function (err, results, fields) {
 				connection.release();
 				if (err) console.log(err.message);
+                return;
 			});
 		});
 	},

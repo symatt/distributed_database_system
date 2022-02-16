@@ -306,45 +306,50 @@ const controller = {
 				}
 				// check if the result is an object, no select query was made
 				else if (results.length == null) {
+					console.log(results);
+					console.log("[NODE 1] insert/delete/update has been made");
 					// get the current time
 					let currTime = new Date()
 						.toISOString()
 						.slice(0, 19)
 						.replace("T", " ");
 					// update node 1's last updated time
-					nodeTime_db.updateTime(1, currTime);
-					console.log("[NODE 1] update TIME");
-					console.log(results);
-					console.log("[NODE 1] insert/delete/update has been made");
-					// get the status of the other nodes
-					nodeTime_db.getStatus((results) => {
-						node2Status = results[1].online;
-						node3Status = results[2].online;
+					nodeTime_db.updateTime(1, currTime, (results) => {
+						console.log("[NODE 1] update TIME");
+						// get the status of the other nodes
+						nodeTime_db.getStatus((results) => {
+							node2Status = results[1].online;
+							node3Status = results[2].online;
 
-						// check if node 2 is online
-						if (node2Status == 1) {
-							node1_db.queryToNode2(q);
-							console.log(
-								"[NODE 2] insert/delete/update has been made"
-							);
-							node2_db.cleanDB();
-							console.log("[NODE 2] clean DB");
-							// update node 2's last updated time
-							nodeTime_db.updateTime(2, currTime);
-							console.log("[NODE 2] update TIME");
-						}
-						// check if node 3 is online
-						if (node3Status == 1) {
-							node1_db.queryToNode3(q);
-							console.log(
-								"[NODE 3] insert/delete/update has been made"
-							);
-							node3_db.cleanDB();
-							console.log("[NODE 3] clean DB");
-							// update node 3's last updated time
-							nodeTime_db.updateTime(3, currTime);
-							console.log("[NODE 3] update TIME");
-						}
+							// check if node 2 is online
+							if (node2Status == 1) {
+								node1_db.queryToNode2(q);
+								console.log(
+									"[NODE 2] insert/delete/update has been made"
+								);
+								let currTime = new Date()
+									.toISOString()
+									.slice(0, 19)
+									.replace("T", " ");
+								// update node 2's last updated time
+								nodeTime_db.updateTime(2, currTime);
+								console.log("[NODE 2] update TIME");
+							}
+							// check if node 3 is online
+							if (node3Status == 1) {
+								node1_db.queryToNode3(q);
+								console.log(
+									"[NODE 3] insert/delete/update has been made"
+								);
+								let currTime = new Date()
+									.toISOString()
+									.slice(0, 19)
+									.replace("T", " ");
+								// update node 3's last updated time
+								nodeTime_db.updateTime(3, currTime);
+								console.log("[NODE 3] update TIME");
+							}
+						});
 						res.status(200).end();
 					});
 				} else {
@@ -520,44 +525,52 @@ const controller = {
 				}
 				// check if the result is an object, no select query was made
 				else if (results.length == null) {
+					console.log("[NODE 2] insert/delete/update has been made");
 					// get the current time
 					let currTime = new Date()
 						.toISOString()
 						.slice(0, 19)
 						.replace("T", " ");
 
-					nodeTime_db.updateTime(2, currTime);
-					console.log("[NODE 2] update TIME");
-					console.log("[NODE 2] insert/delete/update has been made");
-					// get the status of the other nodes
-					nodeTime_db.getStatus((results) => {
-						node1Status = results[0].online;
-						node3Status = results[2].online;
+					nodeTime_db.updateTime(2, currTime, (results) => {
+						console.log("[NODE 2] update TIME");
+						// get the status of the other nodes
+						nodeTime_db.getStatus((results) => {
+							node1Status = results[0].online;
+							node3Status = results[2].online;
 
-						// check if node 1 is online
-						if (node1Status == 1) {
-							node2_db.queryToNode1(q);
-							console.log(
-								"[NODE 1] insert/delete/update has been made"
-							);
-							// update node 1's last updated time
-							nodeTime_db.updateTime(1, currTime);
-							console.log("[NODE 1] update TIME");
-						}
-						// check if node 3 is online
-						if (node3Status == 1) {
-							node2_db.queryToNode3(q);
-							console.log(
-								"[NODE 3] insert/delete/update has been made"
-							);
-							node3_db.cleanDB();
-							console.log("[NODE 3] clean DB");
-							// update node 3's last updated time
-							nodeTime_db.updateTime(3, currTime);
-							console.log("[NODE 3] update TIME");
-						}
-						res.status(200).end();
+							// check if node 1 is online
+							if (node1Status == 1) {
+								node2_db.queryToNode1(q);
+								console.log(
+									"[NODE 1] insert/delete/update has been made"
+								);
+								let currTime = new Date()
+									.toISOString()
+									.slice(0, 19)
+									.replace("T", " ");
+								// update node 1's last updated time
+								nodeTime_db.updateTime(1, currTime);
+								console.log("[NODE 1] update TIME");
+							}
+							// check if node 3 is online
+							if (node3Status == 1) {
+								node2_db.queryToNode3(q);
+								console.log(
+									"[NODE 3] insert/delete/update has been made"
+								);
+								let currTime = new Date()
+									.toISOString()
+									.slice(0, 19)
+									.replace("T", " ");
+								// update node 3's last updated time
+								nodeTime_db.updateTime(3, currTime);
+								console.log("[NODE 3] update TIME");
+							}
+						});
 					});
+
+					res.status(200).end();
 				} else {
 					console.log("[NODE 2] ERROR QUERY");
 				}
@@ -733,42 +746,52 @@ const controller = {
 					}
 				} // check if the result is an object, no select query was made
 				else if (results.length == null) {
+					console.log("[NODE 3] insert/delete/update has been made");
 					// get the current time
 					let currTime = new Date()
 						.toISOString()
 						.slice(0, 19)
 						.replace("T", " ");
 					// update node 3's last updated time
-					nodeTime_db.updateTime(3, currTime);
-					console.log("[NODE 3] update TIME");
-					console.log("[NODE 3] insert/delete/update has been made");
-					// get the status of the other nodes
-					nodeTime_db.getStatus((results) => {
-						node1Status = results[0].online;
-						node2Status = results[1].online;
+					nodeTime_db.updateTime(3, currTime, (results) => {
+						console.log("[NODE 3] update TIME");
 
-						if (node1Status == 1) {
-							node3_db.queryToNode1(q);
-							console.log(
-								"[NODE 1] insert/delete/update has been made"
-							);
-							// update node 1's last updated time
-							nodeTime_db.updateTime(1, currTime);
-							console.log("[NODE 1] update TIME");
-						}
-						if (node2Status == 1) {
-							node3_db.queryToNode2(q);
-							console.log(
-								"[NODE 2] insert/delete/update has been made"
-							);
-							node2_db.cleanDB();
-							console.log("[NODE 2] clean DB");
-							// update node 3's last updated time
-							nodeTime_db.updateTime(2, currTime);
-							console.log("[NODE 2] update TIME");
-						}
-						res.status(200).end();
+						// get the status of the other nodes
+						nodeTime_db.getStatus((results) => {
+							node1Status = results[0].online;
+							node2Status = results[1].online;
+
+							if (node1Status == 1) {
+								node3_db.queryToNode1(q);
+								console.log(
+									"[NODE 1] insert/delete/update has been made"
+								);
+								let currTime = new Date()
+									.toISOString()
+									.slice(0, 19)
+									.replace("T", " ");
+								// update node 1's last updated time
+								nodeTime_db.updateTime(1, currTime);
+								console.log("[NODE 1] update TIME");
+							}
+							if (node2Status == 1) {
+								node3_db.queryToNode2(q);
+								console.log(
+									"[NODE 2] insert/delete/update has been made"
+								);
+
+								let currTime = new Date()
+									.toISOString()
+									.slice(0, 19)
+									.replace("T", " ");
+								// update node 3's last updated time
+								nodeTime_db.updateTime(2, currTime);
+								console.log("[NODE 2] update TIME");
+							}
+						});
 					});
+
+					res.status(200).end();
 				} else {
 					console.log("[NODE 3] ERROR QUERY");
 				}
