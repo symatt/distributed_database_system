@@ -23,6 +23,27 @@ app.use(express.static("public"));
 app.get(`/`, (req, res) => {
 	res.render("index");
 });
+app.get(`/close_node1`, (req, res) => {
+	controller.closeNode1(req, res);
+});
+app.get(`/close_node2`, (req, res) => {
+	controller.closeNode2(req, res);
+});
+app.get(`/close_node3`, (req, res) => {
+	controller.closeNode3(req, res);
+});
+app.get(`/reconn_node1`, (req, res) => {
+	controller.reconnNode1(req, res);
+});
+app.get(`/reconn_node2`, (req, res) => {
+	controller.reconnNode2(req, res);
+});
+app.get(`/reconn_node3`, (req, res) => {
+	controller.reconnNode3(req, res);
+});
+app.get(`/reconn_all`, (req, res) => {
+	controller.reconnAll(req, res);
+});
 
 // node 1 routes
 app.get(`/node1`, (req, res) => {

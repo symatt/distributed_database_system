@@ -45,7 +45,6 @@ $(document).ready(function () {
 			url: "/node3-q",
 			data: {
 				queryInput: $("#queryInput").val(),
-				fail: $("#select-fail").val(),
 			},
 			success: function (result) {
 				// console.log("JQUERY");
