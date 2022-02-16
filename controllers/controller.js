@@ -197,7 +197,7 @@ const controller = {
 								});
 								// create insert string to node 1
 								var insertString = `INSERT INTO movies (movies.id, movies.name, movies.year, movies.rank) 
-                                            VALUES `;
+                                    VALUES `;
 								movies.data.forEach((row) => {
 									console.log(row);
 									insertString = insertString.concat(
@@ -247,10 +247,49 @@ const controller = {
 		});
 	},
 
+	updateTimeFromNode1: function () {
+		var node2Status, node3Status;
+		// get the current time
+		let currTime = new Date().toISOString().slice(0, 19).replace("T", " ");
+		// update node 1's last updated time
+		nodeTime_db.updateTime(1, currTime, (results) => {
+			console.log("[NODE 1] update TIME");
+			// get the status of the other nodes
+			nodeTime_db.getStatus((results) => {
+				node2Status = results[1].online;
+				node3Status = results[2].online;
+
+				// check if node 2 is online
+				if (node2Status == 1) {
+					node1_db.queryToNode2(q);
+					console.log("[NODE 2] insert/delete/update has been made");
+					let currTime = new Date()
+						.toISOString()
+						.slice(0, 19)
+						.replace("T", " ");
+					// update node 2's last updated time
+					nodeTime_db.updateTime(2, currTime);
+					console.log("[NODE 2] update TIME");
+				}
+				// check if node 3 is online
+				if (node3Status == 1) {
+					node1_db.queryToNode3(q);
+					console.log("[NODE 3] insert/delete/update has been made");
+					let currTime = new Date()
+						.toISOString()
+						.slice(0, 19)
+						.replace("T", " ");
+					// update node 3's last updated time
+					nodeTime_db.updateTime(3, currTime);
+					console.log("[NODE 3] update TIME");
+				}
+			});
+		});
+	},
+
 	// queries q using the query input by user from node 1
 	// NOTE: update time is not updated when the user executes both read and write in a query.
 	queryNode1: function (req, res) {
-		var node2Status, node3Status;
 		let q = req.body.queryInput;
 		console.log(q);
 		// if empty, send an error
@@ -275,6 +314,7 @@ const controller = {
 
 					if (len == results.length) {
 						// multi line no select
+						this.updateTimeFromNode1();
 						let movies = {
 							datalength: 0,
 							data: [],
@@ -283,7 +323,7 @@ const controller = {
 						res.send(movies);
 					} else {
 						if (len == 0 && results.length == 1) {
-							// single line select
+							// single line single select
 							let movies = {
 								datalength: results.length,
 								data: [],
@@ -295,9 +335,8 @@ const controller = {
 							console.log(movies);
 							res.send(movies);
 						} else {
-							// single line multi select
 							if (results[len].length == null) {
-								// multi line with multi select
+								// single line multi select
 								let movies = {
 									datalength: results.length,
 									data: [],
@@ -309,6 +348,7 @@ const controller = {
 								console.log(movies);
 								res.send(movies);
 							} else {
+								this.updateTimeFromNode1();
 								// multi line with multi select
 								let movies = {
 									datalength: results[len].length,
@@ -328,50 +368,8 @@ const controller = {
 				else if (results.length == null) {
 					console.log(results);
 					console.log("[NODE 1] insert/delete/update has been made");
-					// get the current time
-					let currTime = new Date()
-						.toISOString()
-						.slice(0, 19)
-						.replace("T", " ");
-					// update node 1's last updated time
-					nodeTime_db.updateTime(1, currTime, (results) => {
-						console.log("[NODE 1] update TIME");
-						// get the status of the other nodes
-						nodeTime_db.getStatus((results) => {
-							node2Status = results[1].online;
-							node3Status = results[2].online;
 
-							// check if node 2 is online
-							if (node2Status == 1) {
-								node1_db.queryToNode2(q);
-								console.log(
-									"[NODE 2] insert/delete/update has been made"
-								);
-								let currTime = new Date()
-									.toISOString()
-									.slice(0, 19)
-									.replace("T", " ");
-								// update node 2's last updated time
-								nodeTime_db.updateTime(2, currTime);
-								console.log("[NODE 2] update TIME");
-							}
-							// check if node 3 is online
-							if (node3Status == 1) {
-								node1_db.queryToNode3(q);
-								console.log(
-									"[NODE 3] insert/delete/update has been made"
-								);
-								let currTime = new Date()
-									.toISOString()
-									.slice(0, 19)
-									.replace("T", " ");
-								// update node 3's last updated time
-								nodeTime_db.updateTime(3, currTime);
-								console.log("[NODE 3] update TIME");
-							}
-						});
-						res.status(200).end();
-					});
+					res.status(200).end();
 				} else {
 					console.log("[NODE 1] ERROR QUERY");
 				}
@@ -476,10 +474,50 @@ const controller = {
 		});
 	},
 
+	updateTimeFromNode2: function () {
+		var node1Status, node3Status;
+
+		// get the current time
+		let currTime = new Date().toISOString().slice(0, 19).replace("T", " ");
+
+		nodeTime_db.updateTime(2, currTime, (results) => {
+			console.log("[NODE 2] update TIME");
+			// get the status of the other nodes
+			nodeTime_db.getStatus((results) => {
+				node1Status = results[0].online;
+				node3Status = results[2].online;
+
+				// check if node 1 is online
+				if (node1Status == 1) {
+					node2_db.queryToNode1(q);
+					console.log("[NODE 1] insert/delete/update has been made");
+					let currTime = new Date()
+						.toISOString()
+						.slice(0, 19)
+						.replace("T", " ");
+					// update node 1's last updated time
+					nodeTime_db.updateTime(1, currTime);
+					console.log("[NODE 1] update TIME");
+				}
+				// check if node 3 is online
+				if (node3Status == 1) {
+					node2_db.queryToNode3(q);
+					console.log("[NODE 3] insert/delete/update has been made");
+					let currTime = new Date()
+						.toISOString()
+						.slice(0, 19)
+						.replace("T", " ");
+					// update node 3's last updated time
+					nodeTime_db.updateTime(3, currTime);
+					console.log("[NODE 3] update TIME");
+				}
+			});
+		});
+	},
+
 	// queries q using the query input by user from node 2
 	// NOTE: update time is not updated when the user executes both read and write in a query.
 	queryNode2: function (req, res) {
-		var node1Status, node3Status;
 		node2_db.cleanDB();
 
 		let q = req.body.queryInput;
@@ -505,6 +543,7 @@ const controller = {
 
 					if (len == results.length) {
 						// multi line no select
+						this.updateTimeFromNode2();
 						let movies = {
 							datalength: 0,
 							data: [],
@@ -525,9 +564,9 @@ const controller = {
 							console.log(movies);
 							res.send(movies);
 						} else {
-							// single line multi select
 							if (results[len].length == null) {
-								// multi line with multi select
+								// single line multi select
+								this.updateTimeFromNode2();
 								let movies = {
 									datalength: results.length,
 									data: [],
@@ -540,6 +579,7 @@ const controller = {
 								res.send(movies);
 							} else {
 								// multi line with multi select
+								this.updateTimeFromNode2();
 								let movies = {
 									datalength: results[len].length,
 									data: [],
@@ -557,50 +597,7 @@ const controller = {
 				// check if the result is an object, no select query was made
 				else if (results.length == null) {
 					console.log("[NODE 2] insert/delete/update has been made");
-					// get the current time
-					let currTime = new Date()
-						.toISOString()
-						.slice(0, 19)
-						.replace("T", " ");
-
-					nodeTime_db.updateTime(2, currTime, (results) => {
-						console.log("[NODE 2] update TIME");
-						// get the status of the other nodes
-						nodeTime_db.getStatus((results) => {
-							node1Status = results[0].online;
-							node3Status = results[2].online;
-
-							// check if node 1 is online
-							if (node1Status == 1) {
-								node2_db.queryToNode1(q);
-								console.log(
-									"[NODE 1] insert/delete/update has been made"
-								);
-								let currTime = new Date()
-									.toISOString()
-									.slice(0, 19)
-									.replace("T", " ");
-								// update node 1's last updated time
-								nodeTime_db.updateTime(1, currTime);
-								console.log("[NODE 1] update TIME");
-							}
-							// check if node 3 is online
-							if (node3Status == 1) {
-								node2_db.queryToNode3(q);
-								console.log(
-									"[NODE 3] insert/delete/update has been made"
-								);
-								let currTime = new Date()
-									.toISOString()
-									.slice(0, 19)
-									.replace("T", " ");
-								// update node 3's last updated time
-								nodeTime_db.updateTime(3, currTime);
-								console.log("[NODE 3] update TIME");
-							}
-						});
-					});
-
+					this.updateTimeFromNode2();
 					res.status(200).end();
 				} else {
 					console.log("[NODE 2] ERROR QUERY");
@@ -708,10 +705,49 @@ const controller = {
 		});
 	},
 
+	updateTimeFromNode3: function () {
+		var node1Status, node2Status;
+		// get the current time
+		let currTime = new Date().toISOString().slice(0, 19).replace("T", " ");
+		// update node 3's last updated time
+		nodeTime_db.updateTime(3, currTime, (results) => {
+			console.log("[NODE 3] update TIME");
+
+			// get the status of the other nodes
+			nodeTime_db.getStatus((results) => {
+				node1Status = results[0].online;
+				node2Status = results[1].online;
+
+				if (node1Status == 1) {
+					node3_db.queryToNode1(q);
+					console.log("[NODE 1] insert/delete/update has been made");
+					let currTime = new Date()
+						.toISOString()
+						.slice(0, 19)
+						.replace("T", " ");
+					// update node 1's last updated time
+					nodeTime_db.updateTime(1, currTime);
+					console.log("[NODE 1] update TIME");
+				}
+				if (node2Status == 1) {
+					node3_db.queryToNode2(q);
+					console.log("[NODE 2] insert/delete/update has been made");
+
+					let currTime = new Date()
+						.toISOString()
+						.slice(0, 19)
+						.replace("T", " ");
+					// update node 3's last updated time
+					nodeTime_db.updateTime(2, currTime);
+					console.log("[NODE 2] update TIME");
+				}
+			});
+		});
+	},
+
 	// queries q using the query input by user from node 3
 	// NOTE: update time is not updated when the user executes both read and write in a query.
 	queryNode3: function (req, res) {
-		var node1Status, node2Status;
 		node3_db.cleanDB();
 
 		let q = req.body.queryInput;
@@ -738,6 +774,7 @@ const controller = {
 
 					if (len == results.length) {
 						// multi line no select
+						this.updateTimeFromNode3();
 						let movies = {
 							datalength: 0,
 							data: [],
@@ -758,9 +795,9 @@ const controller = {
 							console.log(movies);
 							res.send(movies);
 						} else {
-							// single line multi select
 							if (results[len].length == null) {
-								// multi line with multi select
+								// single line multi select
+
 								let movies = {
 									datalength: results.length,
 									data: [],
@@ -773,6 +810,7 @@ const controller = {
 								res.send(movies);
 							} else {
 								// multi line with multi select
+								this.updateTimeFromNode3();
 								let movies = {
 									datalength: results[len].length,
 									data: [],
@@ -789,50 +827,7 @@ const controller = {
 				} // check if the result is an object, no select query was made
 				else if (results.length == null) {
 					console.log("[NODE 3] insert/delete/update has been made");
-					// get the current time
-					let currTime = new Date()
-						.toISOString()
-						.slice(0, 19)
-						.replace("T", " ");
-					// update node 3's last updated time
-					nodeTime_db.updateTime(3, currTime, (results) => {
-						console.log("[NODE 3] update TIME");
-
-						// get the status of the other nodes
-						nodeTime_db.getStatus((results) => {
-							node1Status = results[0].online;
-							node2Status = results[1].online;
-
-							if (node1Status == 1) {
-								node3_db.queryToNode1(q);
-								console.log(
-									"[NODE 1] insert/delete/update has been made"
-								);
-								let currTime = new Date()
-									.toISOString()
-									.slice(0, 19)
-									.replace("T", " ");
-								// update node 1's last updated time
-								nodeTime_db.updateTime(1, currTime);
-								console.log("[NODE 1] update TIME");
-							}
-							if (node2Status == 1) {
-								node3_db.queryToNode2(q);
-								console.log(
-									"[NODE 2] insert/delete/update has been made"
-								);
-
-								let currTime = new Date()
-									.toISOString()
-									.slice(0, 19)
-									.replace("T", " ");
-								// update node 3's last updated time
-								nodeTime_db.updateTime(2, currTime);
-								console.log("[NODE 2] update TIME");
-							}
-						});
-					});
-
+					this.updateTimeFromNode3();
 					res.status(200).end();
 				} else {
 					console.log("[NODE 3] ERROR QUERY");
