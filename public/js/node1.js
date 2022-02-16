@@ -45,11 +45,14 @@ $(document).ready(function () {
 		$.ajax({
 			type: "POST",
 			url: "/node1-q",
-			data: { queryInput: $("#queryInput").val() },
+			data: {
+				queryInput: $("#queryInput").val(),
+				
+			},
 			success: function (result) {
-				// console.log("JQUERY");
-				// console.log(result.datalength);
-				// console.log(result.data);
+				console.log("JQUERY");
+				console.log(result.datalength);
+				console.log(result.data);
 				$("#data-length").text(result.datalength);
 
 				$("#movie-table").find("tbody").empty();
@@ -86,30 +89,5 @@ $(document).ready(function () {
 				);
 			},
 		});
-	});
-
-	$("#isolevel").change(() => {
-		// console.log("changed iso level");
-		$.ajax({
-			type: "POST",
-			url: "/node1-isolevel",
-			data: { iso: $("#isolevel").val() },
-			success: function (result) {
-				// console.log("CHANGED ISO LEVEL");
-			},
-			error: function (jqXHR, textStatus, errorThrown) {
-				alert(
-					"Error, status = " +
-						textStatus +
-						", " +
-						"error thrown: " +
-						errorThrown
-				);
-			},
-		});
-	});
-
-	$("#node1-fail-btn").click(() => {
-		$.get("/node1-fail", (result) => {});
 	});
 });
