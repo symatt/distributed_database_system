@@ -368,7 +368,7 @@ const controller = {
 				else if (results.length == null) {
 					console.log(results);
 					console.log("[NODE 1] insert/delete/update has been made");
-
+					this.updateTimeFromNode1();
 					res.status(200).end();
 				} else {
 					console.log("[NODE 1] ERROR QUERY");
