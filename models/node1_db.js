@@ -8,7 +8,7 @@ const node1_db = {
 		db.con1.getConnection(function (err, connection) {
 			if (err) throw err;
 			db.con1.query(q, function (err, results, fields) {
-				connection.release();
+				connection.destroy();
 				if (err) console.log(err.message);
 				console.log(results);
 				console.log(results.length);
@@ -23,7 +23,7 @@ const node1_db = {
 			if (err) throw err;
 			let qString = `${q}`;
 			db.con1.query(qString, function (err, results, fields) {
-				connection.release();
+				connection.destroy();
 				if (err) console.log(err.message);
 				return callback(results);
 			});
@@ -35,7 +35,7 @@ const node1_db = {
 		db.con2.getConnection(function (err, connection) {
 			if (err) throw err;
 			db.con2.query(q, function (err, results, fields) {
-				connection.release();
+				connection.destroy();
 				if (err) console.log(err.message);
 			});
 		});
@@ -49,20 +49,6 @@ const node1_db = {
 				connection.release();
 				if (err) console.log(err.message);
 			});
-		});
-	},
-
-	// set the session isolation level of node 1
-	setIsoLevel: function (iso) {
-		db.con1.getConnection(function (err, connection) {
-			if (err) throw err;
-			db.con1.query(
-				`SET SESSION TRANSACTION ISOLATION LEVEL ${iso};`,
-				function (err, result, fields) {
-					connection.release();
-					if (err) console.log(err.message);
-				}
-			);
 		});
 	},
 };

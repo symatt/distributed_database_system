@@ -7,7 +7,7 @@ const nodeTime_db = {
 		db.conTime.getConnection(function (err, connection) {
 			if (err) throw err;
 			db.conTime.query(q, function (err, results, fields) {
-				connection.release();
+				connection.destroy();
 				if (err) console.log(err.message);
 				console.log(results);
 				console.log(results.length);
@@ -22,7 +22,7 @@ const nodeTime_db = {
 		db.conTime.getConnection(function (err, connection) {
 			if (err) throw err;
 			db.conTime.query(q, function (err, results, fields) {
-				connection.release();
+				connection.destroy();
 				if (err) console.log(err.message);
 				console.log(results);
 				console.log(results.length);
@@ -37,7 +37,7 @@ const nodeTime_db = {
 		db.conTime.getConnection(function (err, connection) {
 			if (err) throw err;
 			db.conTime.query(q, function (err, results, fields) {
-				connection.release();
+				connection.destroy();
 				if (err) console.log(err.message);
                 return;
 			});
