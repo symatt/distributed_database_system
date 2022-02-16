@@ -5,6 +5,7 @@ This is a group project for STADVDB where we needed to simulate a distributed da
 > Note that the AWS RDS databases are only using the free tier (limited hours per month) thus may be closed.
 > Note that there may be times where you will need to wait as the queries have not yet finished when loading due to connection issues to the AWS server.
 
+
 To run locally, execute the following:
 ```
 npm i
