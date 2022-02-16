@@ -59,6 +59,12 @@ const controller = {
 								"[NODE 1] replication of 1 row from node 2 complete."
 							);
 						});
+						// update the time of node 1
+						let currTime = new Date()
+							.toISOString()
+							.slice(0, 19)
+							.replace("T", " ");
+						nodeTime_db.updateTime(1, currTime);
 					} else console.log("[NODE 2] error with select all");
 				});
 			} else console.log("Node 1 upto date from node 2."); // node 1 is the latest version, don't replicate from node 2
@@ -104,6 +110,12 @@ const controller = {
 								"[NODE 1] replication of 1 row from node 3 complete."
 							);
 						});
+						// update the time of node 1
+						let currTime = new Date()
+							.toISOString()
+							.slice(0, 19)
+							.replace("T", " ");
+						nodeTime_db.updateTime(1, currTime);
 					} else console.log("[NODE 3] error with select all");
 				});
 			} else console.log("Node 1 upto date from node 3."); // node 1 is the latest version, don't replicate from node 3
@@ -280,6 +292,12 @@ const controller = {
 									"[NODE 2] finished replication from node 1."
 								);
 							});
+							// update the time of node 2
+							let currTime = new Date()
+								.toISOString()
+								.slice(0, 19)
+								.replace("T", " ");
+							nodeTime_db.updateTime(2, currTime);
 						} else
 							console.log(
 								"[NODE 1] error with select movies year < 1980"
@@ -459,6 +477,13 @@ const controller = {
 									"[NODE 3] finished replication from node 1."
 								);
 							});
+
+							// update the time of node 3
+							let currTime = new Date()
+								.toISOString()
+								.slice(0, 19)
+								.replace("T", " ");
+							nodeTime_db.updateTime(3, currTime);
 						} else
 							console.log(
 								"[NODE 1] error with select movies where year >= 1980"
