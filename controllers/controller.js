@@ -267,41 +267,61 @@ const controller = {
 					let len = 0;
 					while (
 						len < results.length &&
-						results[len].length == null
+						Object.keys(results[len]).length == 8 // okpacket
 					) {
 						len++;
 					}
-					if (len == 0 || len > results.length) {
+					console.log(`results len after while loop: ${len}`);
+
+					if (len == results.length) {
+						// multi line no select
 						let movies = {
 							datalength: 0,
 							data: [],
 						};
 						console.log("[NODE 1] no select statement");
 						res.send(movies);
-					} else if (len == 1 && results.length == len) {
-						// if movies was found, send it to the page
-						let movies = {
-							datalength: results.length,
-							data: [],
-						};
-
-						movies.data.push(results[0]);
-
-						console.log("[NODE 1] Reloading table 1 row");
-						console.log(movies);
-						res.send(movies);
 					} else {
-						// if movies was found, send it to the page
-						let movies = {
-							datalength: results[len].length,
-							data: [],
-						};
-						results[len].forEach((RowDataPacket) => {
-							movies.data.push(RowDataPacket);
-						});
-						console.log("[NODE 1] Reloading table");
-						console.log(movies);
-						res.send(movies);
+						if (len == 0 && results.length == 1) {
+							// single line select
+							let movies = {
+								datalength: results.length,
+								data: [],
+							};
+
+							movies.data.push(results[0]);
+
+							console.log("[NODE 1] Reloading table 1 row");
+							console.log(movies);
+							res.send(movies);
+						} else {
+							// single line multi select
+							if (results[len].length == null) {
+								// multi line with multi select
+								let movies = {
+									datalength: results.length,
+									data: [],
+								};
+								results.forEach((RowDataPacket) => {
+									movies.data.push(RowDataPacket);
+								});
+								console.log("[NODE 1] Reloading table");
+								console.log(movies);
+								res.send(movies);
+							} else {
+								// multi line with multi select
+								let movies = {
+									datalength: results[len].length,
+									data: [],
+								};
+								results[len].forEach((RowDataPacket) => {
+									movies.data.push(RowDataPacket);
+								});
+								console.log("[NODE 1] Reloading table");
+								console.log(movies);
+								res.send(movies);
+							}
+						}
 					}
 				}
 				// check if the result is an object, no select query was made
@@ -357,15 +377,6 @@ const controller = {
 				}
 			});
 		}
-	},
-
-	// sets the session isolation level of node 1
-	setIsoLevel1: function (req, res) {
-		let iso = req.body.iso;
-		console.log(iso);
-		node1_db.setIsoLevel(iso);
-		console.log("[NODE 1] changed session isolation level");
-		res.status(200).end();
 	},
 
 	// initiates the connection to node 2 by udpating its data if needed
@@ -482,45 +493,65 @@ const controller = {
 			node2_db.query(q, (results) => {
 				// check if the result is an array, this means select query
 				if (results.length != null) {
-					console.log(results);
+					// find the first select query result
 					let len = 0;
 					while (
 						len < results.length &&
-						results[len].length == null
+						Object.keys(results[len]).length == 8 // okpacket
 					) {
 						len++;
 					}
-					if (len == 0 || len > results.length) {
+					console.log(`results len after while loop: ${len}`);
+
+					if (len == results.length) {
+						// multi line no select
 						let movies = {
 							datalength: 0,
 							data: [],
 						};
 						console.log("[NODE 2] no select statement");
 						res.send(movies);
-					} else if (len == 1 && results.length == len) {
-						// if movies was found, send it to the page
-						let movies = {
-							datalength: results.length,
-							data: [],
-						};
-
-						movies.data.push(results[0]);
-
-						console.log("[NODE 2] Reloading table 1 row");
-						console.log(movies);
-						res.send(movies);
 					} else {
-						// if movies was found, send it to the page
-						let movies = {
-							datalength: results[len].length,
-							data: [],
-						};
-						results[len].forEach((RowDataPacket) => {
-							movies.data.push(RowDataPacket);
-						});
-						console.log("[NODE 2] Reloading table");
-						console.log(movies);
-						res.send(movies);
+						if (len == 0 && results.length == 1) {
+							// single line select
+							let movies = {
+								datalength: results.length,
+								data: [],
+							};
+
+							movies.data.push(results[0]);
+
+							console.log("[NODE 2] Reloading table 1 row");
+							console.log(movies);
+							res.send(movies);
+						} else {
+							// single line multi select
+							if (results[len].length == null) {
+								// multi line with multi select
+								let movies = {
+									datalength: results.length,
+									data: [],
+								};
+								results.forEach((RowDataPacket) => {
+									movies.data.push(RowDataPacket);
+								});
+								console.log("[NODE 2] Reloading table");
+								console.log(movies);
+								res.send(movies);
+							} else {
+								// multi line with multi select
+								let movies = {
+									datalength: results[len].length,
+									data: [],
+								};
+								results[len].forEach((RowDataPacket) => {
+									movies.data.push(RowDataPacket);
+								});
+								console.log("[NODE 2] Reloading table");
+								console.log(movies);
+								res.send(movies);
+							}
+						}
 					}
 				}
 				// check if the result is an object, no select query was made
@@ -576,15 +607,6 @@ const controller = {
 				}
 			});
 		}
-	},
-
-	// sets the session isolation level of node 2
-	setIsoLevel2: function (req, res) {
-		let iso = req.body.iso;
-		console.log(iso);
-		node2_db.setIsoLevel(iso);
-		console.log("[NODE 2] changed isolation level");
-		res.status(200).end();
 	},
 
 	// initiates the connection to node 3 by udpating its data if needed
@@ -704,45 +726,65 @@ const controller = {
 				// check if the result is an array, this means select query
 				if (results.length != null) {
 					console.log(results);
+					// find the first select query result
 					let len = 0;
 					while (
 						len < results.length &&
-						results[len].length == null
+						Object.keys(results[len]).length == 8 // okpacket
 					) {
-						console.log(results[len]);
 						len++;
 					}
-					if (len == 0 || len > results.length) {
+					console.log(`results len after while loop: ${len}`);
+
+					if (len == results.length) {
+						// multi line no select
 						let movies = {
 							datalength: 0,
 							data: [],
 						};
 						console.log("[NODE 3] no select statement");
 						res.send(movies);
-					} else if (len == 1 && results.length == len) {
-						// if movies was found, send it to the page
-						let movies = {
-							datalength: results.length,
-							data: [],
-						};
-
-						movies.data.push(results[0]);
-
-						console.log("[NODE 3] Reloading table 1 row");
-						console.log(movies);
-						res.send(movies);
 					} else {
-						// if movies was found, send it to the page
-						let movies = {
-							datalength: results[len].length,
-							data: [],
-						};
-						results[len].forEach((RowDataPacket) => {
-							movies.data.push(RowDataPacket);
-						});
-						console.log("[NODE 3] Reloading table");
-						console.log(movies);
-						res.send(movies);
+						if (len == 0 && results.length == 1) {
+							// single line select
+							let movies = {
+								datalength: results.length,
+								data: [],
+							};
+
+							movies.data.push(results[0]);
+
+							console.log("[NODE 1] Reloading table 3 row");
+							console.log(movies);
+							res.send(movies);
+						} else {
+							// single line multi select
+							if (results[len].length == null) {
+								// multi line with multi select
+								let movies = {
+									datalength: results.length,
+									data: [],
+								};
+								results.forEach((RowDataPacket) => {
+									movies.data.push(RowDataPacket);
+								});
+								console.log("[NODE 3] Reloading table");
+								console.log(movies);
+								res.send(movies);
+							} else {
+								// multi line with multi select
+								let movies = {
+									datalength: results[len].length,
+									data: [],
+								};
+								results[len].forEach((RowDataPacket) => {
+									movies.data.push(RowDataPacket);
+								});
+								console.log("[NODE 3] Reloading table");
+								console.log(movies);
+								res.send(movies);
+							}
+						}
 					}
 				} // check if the result is an object, no select query was made
 				else if (results.length == null) {
@@ -797,15 +839,6 @@ const controller = {
 				}
 			});
 		}
-	},
-
-	// sets the session isolation level of node 3
-	setIsoLevel3: function (req, res) {
-		let iso = req.body.iso;
-		console.log(iso);
-		node3_db.setIsoLevel(iso);
-		console.log("[NODE 3] changed isolation level");
-		res.status(200).end();
 	},
 };
 
