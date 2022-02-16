@@ -50,9 +50,9 @@ $(document).ready(function () {
 				
 			},
 			success: function (result) {
-				// console.log("JQUERY");
-				// console.log(result.datalength);
-				// console.log(result.data);
+				console.log("JQUERY");
+				console.log(result.datalength);
+				console.log(result.data);
 				$("#data-length").text(result.datalength);
 
 				$("#movie-table").find("tbody").empty();

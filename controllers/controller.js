@@ -45,8 +45,8 @@ const controller = {
 	reconnAll: function (req, res) {
 		nodeTime_db.getStatus((results) => {
 			let node1Status = results[0].online;
-			let node2Status = results[0].online;
-			let node3Status = results[0].online;
+			let node2Status = results[1].online;
+			let node3Status = results[2].online;
 
 			if (node1Status == 0) {
 				nodeTime_db.updateOnline(1, 1);
@@ -271,12 +271,24 @@ const controller = {
 					) {
 						len++;
 					}
-
-					if (len >= results.length) {
+					if (len == 0 || len > results.length) {
 						let movies = {
 							datalength: 0,
 							data: [],
 						};
+						console.log("[NODE 1] no select statement");
+						res.send(movies);
+					} else if (len == 1 && results.length == len) {
+						// if movies was found, send it to the page
+						let movies = {
+							datalength: results.length,
+							data: [],
+						};
+
+						movies.data.push(results[0]);
+
+						console.log("[NODE 1] Reloading table 1 row");
+						console.log(movies);
 						res.send(movies);
 					} else {
 						// if movies was found, send it to the page
@@ -473,11 +485,24 @@ const controller = {
 					) {
 						len++;
 					}
-					if (len >= results.length) {
+					if (len == 0 || len > results.length) {
 						let movies = {
 							datalength: 0,
 							data: [],
 						};
+						console.log("[NODE 2] no select statement");
+						res.send(movies);
+					} else if (len == 1 && results.length == len) {
+						// if movies was found, send it to the page
+						let movies = {
+							datalength: results.length,
+							data: [],
+						};
+
+						movies.data.push(results[0]);
+
+						console.log("[NODE 2] Reloading table 1 row");
+						console.log(movies);
 						res.send(movies);
 					} else {
 						// if movies was found, send it to the page
@@ -674,11 +699,24 @@ const controller = {
 						console.log(results[len]);
 						len++;
 					}
-					if (len >= results.length) {
+					if (len == 0 || len > results.length) {
 						let movies = {
 							datalength: 0,
 							data: [],
 						};
+						console.log("[NODE 3] no select statement");
+						res.send(movies);
+					} else if (len == 1 && results.length == len) {
+						// if movies was found, send it to the page
+						let movies = {
+							datalength: results.length,
+							data: [],
+						};
+
+						movies.data.push(results[0]);
+
+						console.log("[NODE 3] Reloading table 1 row");
+						console.log(movies);
 						res.send(movies);
 					} else {
 						// if movies was found, send it to the page
